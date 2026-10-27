@@ -4,7 +4,7 @@ Read this when the user has no GitHub account or repo for quizzes yet, or isn't 
 
 ## What they're setting up (say this first, briefly)
 
-GitHub is a free site for storing files. GitHub Pages turns a folder of files into a public website for free. Each quiz becomes one page on that site, at an address like `https://their-username.github.io/StudyGuides/biology/cells/`. Anyone with the link can open it, so quizzes never contain names or school details.
+GitHub is a free site for storing files. GitHub Pages turns a folder of files into a public website for free. Each quiz becomes one page on that site, at an address like `https://their-username.github.io/StudyGuides/science/biology/cells/quiz-1/`. Anyone with the link can open it, so quizzes never contain names or school details.
 
 ## Part 1: Create a GitHub account (skip if they have one)
 

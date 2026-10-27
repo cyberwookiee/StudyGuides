@@ -5,7 +5,7 @@ description: Build a self-grading practice quiz web page for any subject (math, 
 
 # Study Quiz Builder
 
-Turns class material for any subject (photos of notes, worksheets, homework, textbook pages, study sheets, or a typed list of concepts) into a single-file, self-grading quiz page, then publishes it to the user's GitHub Pages site at `https://<owner>.github.io/<repo>/<subject>/<unit>/`.
+Turns class material for any subject (photos of notes, worksheets, homework, textbook pages, study sheets, or a typed list of concepts) into a single-file, self-grading quiz page, then publishes it to the user's GitHub Pages site at `https://<owner>.github.io/<repo>/<subject>/<course>/<unit>/<quiz>/`.
 
 The quiz engine ships with this skill at `assets/quiz-template.html` (an Algebra 2 quiz that has been used and debugged with real students). **Start every quiz from that file.** Replace its content and adapt the question types, but don't rebuild the engine from scratch.
 
@@ -57,7 +57,13 @@ If the user later says to publish somewhere else ("put this one in my other repo
 ## 2. Gather inputs
 
 - **Material:** the images or concepts the user provides. If they send images in batches ("more coming"), keep a running topic list and wait for "that's all" before building.
-- **Subject and destination path:** `<subject>/<unit>`, lowercase with hyphens, for example `math/unit2`, `biology/cells`, `us-history/civil-war`, `english/the-great-gatsby`. The path must not contain school, teacher or student names. If the user didn't give one, propose one from the material and ask once.
+- **Destination path:** always four levels, `<subject>/<course>/<unit>/<quiz>`, lowercase with hyphens:
+  - `<subject>`: the broad subject, e.g. `math`, `science`, `history`, `english`.
+  - `<course>`: the course, e.g. `algebra-2`, `geometry`, `biology`, `us-history`. Never an honors/AP level, teacher, school or section.
+  - `<unit>`: `unit-<number>` when the class numbers its units (`unit-3`), otherwise the unit's name (`cells`, `civil-war`, `the-great-gatsby`).
+  - `<quiz>`: `quiz-<number>`, numbered within the unit. Look at the unit's existing folders in the repo and use the next number (`quiz-1` for the first). Use a name instead (`midterm-review`) only when the user asks for one.
+  - Examples: `math/algebra-2/unit-1/quiz-3`, `science/biology/cells/quiz-1`, `history/us-history/civil-war/quiz-2`.
+  - The path must not contain school, teacher or student names. If the course or unit isn't clear from the material or the conversation, propose a path and ask once.
 - **Defaults unless told otherwise:** 50 questions, a mix of types (about 40% multiple choice, 20% true/false, 40% free response), and visual questions where the subject has them.
 
 ## 3. Read the material
@@ -110,9 +116,9 @@ Quality rules:
 ## 5. Build the page
 
 1. Get push access to the saved repo and clone it with a generous timeout. (In Claude's cloud workspace this is `add_repo` with the saved owner and repo and `access: push`; elsewhere use whatever GitHub access the session has.) If access is refused, relay the reason and tell the user how to grant it; `references/github-setup.md` covers connecting GitHub.
-2. Copy this skill's `assets/quiz-template.html` to `<subject>/<unit>/index.html` in the repo. If that path already holds a quiz, ask before overwriting it.
-3. Replace: `<title>`, the header eyebrow (a generic subject and unit label), `<h1>`, the intro text, `SECTIONS`, the `Q` array, and the old quiz's helper constants (`gx`, `gG`, `drGraph`). Remove math-only help text (the guide's interval and equation entries, the ∞/∪ buttons) when the quiz doesn't use those types, and add the `text` type's help when it does. Type chips are computed from `Q`.
-4. **Change the storage key** `const KEY='…'` to a unique value such as `<repo>-<subject>-<unit>-v1` (lowercase). All quizzes on one github.io site share a browser origin, so a reused key would mix up saved answers between quizzes.
+2. Copy this skill's `assets/quiz-template.html` to `<subject>/<course>/<unit>/<quiz>/index.html` in the repo. If that path already holds a quiz, ask before overwriting it.
+3. Replace: `<title>`, the header eyebrow (a generic course and unit label such as "Algebra 2 · Unit 1" or "Biology · Cells"), `<h1>`, the intro text, `SECTIONS`, the `Q` array, and the old quiz's helper constants (`gx`, `gG`, `drGraph`). Remove math-only help text (the guide's interval and equation entries, the ∞/∪ buttons) when the quiz doesn't use those types, and add the `text` type's help when it does. Type chips are computed from `Q`.
+4. **Change the storage key** `const KEY='…'` to a unique value such as `<repo>-<subject>-<course>-<unit>-<quiz>-v1` (lowercase). All quizzes on one github.io site share a browser origin, so a reused key would mix up saved answers between quizzes.
 5. Keep everything else: grading, the Submit/results panel with per-section scores, "Show only missed," Retake, the two-tap Clear all answers button, localStorage saving (answers and results survive reload), free-response help (`?` buttons, guide, placeholders), and light/dark theme.
 6. The file stays a complete standalone HTML document (doctype, head, body) with no Claude-specific dependencies. The only outside resource is Google Fonts.
 
@@ -133,7 +139,7 @@ Quality rules:
 
 - Commit with the saved commit author.
 - Commit messages are generic ("Add biology cells quiz") and contain no names, no school details, and no links to Claude sessions or chats, because the repo's history is public. A `Co-Authored-By: Claude …` line is fine.
-- Push to the saved branch. The page goes live at `https://<owner>.github.io/<repo>/<subject>/<unit>/` within a couple of minutes.
+- Push to the saved branch. The page goes live at `https://<owner>.github.io/<repo>/<subject>/<course>/<unit>/<quiz>/` within a couple of minutes.
 - Check that the URL loads (WebFetch). If it returns 404 after a few minutes on a repo's first quiz, GitHub Pages probably isn't turned on yet: give the user the "Turn on GitHub Pages" steps from `references/github-setup.md`. Otherwise say it isn't live yet and offer to check again.
 - If this session can't reach the repo, or a step needs GitHub settings this session can't change, tell the user the exact manual step instead of trying workarounds.
 
