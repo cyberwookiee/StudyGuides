@@ -1,13 +1,20 @@
 ---
 name: study-quiz-builder
-description: Build a self-grading practice quiz web page for any subject (math, science, history, literature, etc.) from photos of class material or a list of concepts, and publish it to the user's own GitHub Pages site. Use whenever the user wants a practice quiz, test prep page, study guide quiz or review questions built from worksheets, notes, homework or a topic list, even if they don't mention GitHub.
+description: Build a self-grading practice quiz web page for any subject (math, science, history, literature, etc.) from photos of class material or a list of concepts, and publish it to the user's own GitHub Pages site. Two modes - a classic all-at-once quiz graded at the end, or a mastery quiz that asks one question at a time and keeps drilling each sub-topic until the student gets several right in a row. Use whenever the user wants a practice quiz, test prep page, study guide quiz or review questions built from worksheets, notes, homework or a topic list, even if they don't mention GitHub.
 ---
 
 # Study Quiz Builder
 
 Turns class material for any subject (photos of notes, worksheets, homework, textbook pages, study sheets, or a typed list of concepts) into a single-file, self-grading quiz page, then publishes it to the user's GitHub Pages site at `https://<owner>.github.io/<repo>/<subject>/<course>/<unit>/<quiz>/`.
 
-The quiz engine ships with this skill at `assets/quiz-template.html` (an Algebra 2 quiz that has been used and debugged with real students). **Start every quiz from that file.** Replace its content and adapt the question types, but don't rebuild the engine from scratch.
+There are two quiz modes, each with its own tested engine in `assets/`:
+
+| Mode | Engine | How it works | Good for |
+|---|---|---|---|
+| **Classic** | `assets/quiz-template.html` | All questions on one page (default 50). The student answers everything, submits, and gets a score with per-section results. | A practice test before an exam |
+| **Mastery** | `assets/mastery-template.html` | One question per screen with instant feedback. Each sub-topic continues until the student gets 3 right in a row (mastered, move on) or reaches 20 questions (marked for practice, move on). Results show which topics still need work. | Drilling a unit until every concept sticks |
+
+**Start every quiz from the matching engine.** Replace its content, but don't rebuild the engine from scratch. Each template is a complete working quiz, so read it as a worked example.
 
 ## 0. ABSOLUTE RULE: no personal or identifying information
 
@@ -56,6 +63,7 @@ If the user later says to publish somewhere else ("put this one in my other repo
 
 ## 2. Gather inputs
 
+- **Mode:** classic or mastery. Use what the user asked for ("practice test" → classic; "drill", "keep asking until he gets it", "one at a time", "mastery" → mastery). If the request doesn't say, ask once, briefly describing both.
 - **Material:** the images or concepts the user provides. If they send images in batches ("more coming"), keep a running topic list and wait for "that's all" before building.
 - **Destination path:** always four levels, `<subject>/<course>/<unit>/<quiz>`, lowercase with hyphens:
   - `<subject>`: the broad subject, e.g. `math`, `science`, `history`, `english`.
@@ -64,18 +72,22 @@ If the user later says to publish somewhere else ("put this one in my other repo
   - `<quiz>`: `quiz-<number>`, numbered within the unit. Look at the unit's existing folders in the repo and use the next number (`quiz-1` for the first). Use a name instead (`midterm-review`) only when the user asks for one.
   - Examples: `math/algebra-2/unit-1/quiz-3`, `science/biology/cells/quiz-1`, `history/us-history/civil-war/quiz-2`.
   - The path must not contain school, teacher or student names. If the course or unit isn't clear from the material or the conversation, propose a path and ask once.
-- **Defaults unless told otherwise:** 50 questions, a mix of types (about 40% multiple choice, 20% true/false, 40% free response), and visual questions where the subject has them.
+- **Defaults unless told otherwise:**
+  - Classic: 50 questions, a mix of types (about 40% multiple choice, 20% true/false, 40% free response), and visual questions where the subject has them.
+  - Mastery: one topic per sub-topic of the unit (4 to 8), master after 3 right in a row, up to 20 questions per topic.
 
 ## 3. Read the material
 
-- List every topic, term, event, concept and skill covered, grouped into sections. These become the quiz sections.
+- List every topic, term, event, concept and skill covered, grouped into sections. These become the quiz sections (classic) or the topics to master (mastery; one skill or idea per topic).
 - Note mistakes or gaps visible in the student's work, such as wrong answers, confused terms, or mixed-up dates. Write questions that target those weak spots, and briefly tell the user which ones you found. Describe them without names.
 - Stay inside what the material covers. Don't test content the class hasn't seen.
 - Note any PII visible in the photos so you know what the PII scan must catch. Never carry it into the quiz.
 
 ## 4. Write the questions
 
-Each question is an object in the `Q` array. Every question has:
+**Mastery mode:** read `references/mastery-mode.md` now. Questions use the same types and fields as below, grouped by topic instead of `s`, and computational topics also get question generators so a struggling student keeps getting fresh questions.
+
+Each question is an object in the `Q` array (classic) or a topic's `qs` array (mastery, without `s`). Every question has:
 - `s`: section index into `SECTIONS`
 - `q`: prompt HTML
 - `ex`: a one or two sentence explanation shown after grading
@@ -92,7 +104,7 @@ These types come with the template:
 | `interval` | `acc` (accepted strings), `ans` | normalized string match |
 | `expr` | `f` (JS function of x), `ans` | evaluates the typed equation at 6 x-values; any equivalent form passes |
 
-For history, literature, science vocabulary and other non-math subjects, **add a `text` type** for short answers (a term, name, date, place or one-word concept):
+For history, literature, science vocabulary and other non-math subjects, use a `text` type for short answers. The mastery engine has it built in; in classic mode, **add it** (a term, name, date, place or one-word concept):
 - Fields: `acc` (array of accepted answers, including common alternate spellings and forms), `ans` (display text).
 - Grader: normalize both sides (lowercase, trim, collapse spaces, strip punctuation and a leading "the/a/an", convert number words to digits), then require an exact match against any accepted answer. Optionally allow a one-letter typo for answers longer than 6 characters.
 - Add `TYPE_LABEL`, `HINTS`, `PH` and `HELP` entries for it, for example "Type a word or short phrase. Spelling counts, capitals don't."
@@ -116,16 +128,17 @@ Quality rules:
 ## 5. Build the page
 
 1. Get push access to the saved repo and clone it with a generous timeout. (In Claude's cloud workspace this is `add_repo` with the saved owner and repo and `access: push`; elsewhere use whatever GitHub access the session has.) If access is refused, relay the reason and tell the user how to grant it; `references/github-setup.md` covers connecting GitHub.
-2. Copy this skill's `assets/quiz-template.html` to `<subject>/<course>/<unit>/<quiz>/index.html` in the repo. If that path already holds a quiz, ask before overwriting it.
-3. Replace: `<title>`, the header eyebrow (a generic course and unit label such as "Algebra 2 · Unit 1" or "Biology · Cells"), `<h1>`, the intro text, `SECTIONS`, the `Q` array, and the old quiz's helper constants (`gx`, `gG`, `drGraph`). Remove math-only help text (the guide's interval and equation entries, the ∞/∪ buttons) when the quiz doesn't use those types, and add the `text` type's help when it does. Type chips are computed from `Q`.
+2. Copy the mode's engine (`assets/quiz-template.html` or `assets/mastery-template.html`) to `<subject>/<course>/<unit>/<quiz>/index.html` in the repo. Classic and mastery quizzes share the unit's `quiz-N` numbering. If that path already holds a quiz, ask before overwriting it.
+3. **Mastery:** make the changes listed in `references/mastery-mode.md` ("What to change in the template"), then go to step 4 below. **Classic:** replace `<title>`, the header eyebrow (a generic course and unit label such as "Algebra 2 · Unit 1" or "Biology · Cells"), `<h1>`, the intro text, `SECTIONS`, the `Q` array, and the old quiz's helper constants (`gx`, `gG`, `drGraph`). Remove math-only help text (the guide's interval and equation entries, the ∞/∪ buttons) when the quiz doesn't use those types, and add the `text` type's help when it does. Type chips are computed from `Q`.
 4. **Change the storage key** `const KEY='…'` to a unique value such as `<repo>-<subject>-<course>-<unit>-<quiz>-v1` (lowercase). All quizzes on one github.io site share a browser origin, so a reused key would mix up saved answers between quizzes.
-5. Keep everything else: grading, the Submit/results panel with per-section scores, "Show only missed," Retake, the two-tap Clear all answers button, localStorage saving (answers and results survive reload), free-response help (`?` buttons, guide, placeholders), and light/dark theme.
+5. Keep everything else. Classic: grading, the Submit/results panel with per-section scores, "Show only missed," Retake, the two-tap Clear all answers button, localStorage saving (answers and results survive reload), free-response help (`?` buttons, guide, placeholders), and light/dark theme. Mastery: the engine below the grading comment, the topic chips, streak dots, Show answer, Start over and the results screen.
 6. The file stays a complete standalone HTML document (doctype, head, body) with no Claude-specific dependencies. The only outside resource is Google Fonts.
 
 ## 6. Verify before publishing
 
 - **Answers:** check every answer key. For math and science, compute it in code. For history and literature, check facts against the class material, and look up anything uncertain on the web.
 - **Grading:** run the graders in Node against every free-response key. The correct answer and its accepted variants must pass; an obvious wrong answer must fail.
+- **Mastery mode:** run `python3 scripts/check_mastery.py <quiz>/index.html` from this skill's folder and fix everything until it prints `RESULT: PASS`. It covers answer keys for every fixed question and hundreds of variants of each generator, the mastery flow, resume after reload, and phone layout. Then read a few generated samples per generator for wording and math.
 - **Render:** load the page once with Playwright (Chromium) at phone width. Confirm the question count, no script errors, and that figures look right. Screenshot a few figure questions and look at them.
 - **PII scan (required, blocking):**
   - Grep the file case-insensitively for every name, school, town and other identifier seen in the photos or the conversation, including the student's and teacher's names.
@@ -147,7 +160,7 @@ Quality rules:
 
 Keep it short:
 - the live link
-- the question mix (counts by type, and how many have figures)
+- the mode, and the question mix: classic, counts by type and how many have figures; mastery, the topics, how many have generators, and the rules (streak and cap)
 - the weak spots the questions target
 - confirmation that the PII scan passed
 - anything that needs the user's attention

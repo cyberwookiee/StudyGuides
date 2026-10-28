@@ -21,6 +21,9 @@ h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:22px;m
 .btn{display:inline-block;padding:11px 18px;border-radius:10px;font-weight:700;text-decoration:none;border:1px solid var(--line);color:var(--ink);background:var(--card)}
 .btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.modes h3{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:18px;margin:0 0 6px}
+.modes p{margin:0;color:var(--muted)}
 ul,ol{padding-left:22px;margin:8px 0}
 li{margin:4px 0}
 .note{background:var(--soft);border-radius:12px;padding:14px 18px;margin-top:16px}
@@ -40,14 +43,20 @@ footer{margin-top:48px;color:var(--muted);font-size:14px}
     <a class="btn" href="references/github-setup.html">GitHub setup guide</a>
   </div>
 
+  <h2>Two kinds of quiz</h2>
+  <div class="modes">
+    <div class="card"><h3>Practice test</h3><p>All the questions on one page, about 50 by default. Answer everything, submit, and see a score with results by section. Good right before an exam.</p></div>
+    <div class="card"><h3>Mastery drill</h3><p>One question at a time, with right or wrong and an explanation right away. Each topic keeps going until 3 in a row are right, up to 20 questions, then moves on. Know it all and you're done in a few minutes; struggle with a topic and you get more practice right there.</p></div>
+  </div>
+
   <h2>What it does</h2>
   <div class="card">
     <ul>
       <li>Reads class material for any subject and groups it into quiz sections.</li>
-      <li>Writes about 50 questions: multiple choice, true/false and typed answers, with graphs and diagrams where they help.</li>
+      <li>Writes multiple choice, true/false and typed-answer questions, with graphs and diagrams where they help. Math drills generate fresh questions, so practice never runs dry.</li>
       <li>Targets the mistakes it spots in the student's work.</li>
       <li>Checks every answer key and grader before publishing.</li>
-      <li>Grades instantly in the browser, shows per-section scores, saves progress on the device, and works on phones.</li>
+      <li>Grades instantly in the browser, saves progress on the device, and works on phones.</li>
       <li>Scans each page so no names, schools, locations or other personal details are ever published.</li>
     </ul>
   </div>
@@ -55,7 +64,7 @@ footer{margin-top:48px;color:var(--muted);font-size:14px}
   <h2>Getting started</h2>
   <ol>
     <li>Download the skill file and add it to Claude in your skills settings.</li>
-    <li>Ask Claude for a quiz and attach photos of the material, for example: “Make a practice quiz from these biology worksheets.”</li>
+    <li>Ask Claude for a quiz and attach photos of the material, for example: “Make a practice test from these biology worksheets” or “Make a mastery drill for this algebra unit.”</li>
     <li>The first time, Claude asks which GitHub repo to publish to and remembers it. No repo yet? Claude walks you through the <a href="references/github-setup.html">one-time setup</a>.</li>
   </ol>
   <div class="note">Quizzes are public web pages. Anyone with a link can open them, which is why the skill keeps every personal detail out.</div>

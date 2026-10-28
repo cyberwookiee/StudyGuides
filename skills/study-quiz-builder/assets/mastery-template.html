@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}</style>
+<title>Algebra 2 Unit 1 Mastery Quiz</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600;700&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout: one question card at a time on graph paper, topic chips, sticky mastery bar, results panel at the end */
+:root{
+  --bg:#eef2f6; --paper:#ffffff; --ink:#16202c; --muted:#596678; --line:#d5dde7;
+  --grid:rgba(31,95,191,.09); --accent:#1f5fbf; --accent-ink:#ffffff; --accent-soft:#e2ebf9;
+  --ok:#17733f; --ok-soft:#e1f2e8; --bad:#b42318; --bad-soft:#fbe8e5; --skip:#8a5a00; --skip-soft:#fbf1dc;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-math:"STIX Two Text", "Cambria Math", "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f141b; --paper:#161d27; --ink:#e5eaf1; --muted:#99a5b5; --line:#2a3443;
+  --grid:rgba(122,167,255,.07); --accent:#82abff; --accent-ink:#0f141b; --accent-soft:#1b2944;
+  --ok:#62cf8f; --ok-soft:#14301f; --bad:#ff8b7b; --bad-soft:#3b1d19; --skip:#e9b85a; --skip-soft:#352a14; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --paper:#161d27; --ink:#e5eaf1; --muted:#99a5b5; --line:#2a3443;
+  --grid:rgba(122,167,255,.07); --accent:#82abff; --accent-ink:#0f141b; --accent-soft:#1b2944;
+  --ok:#62cf8f; --ok-soft:#14301f; --bad:#ff8b7b; --bad-soft:#3b1d19; --skip:#e9b85a; --skip-soft:#352a14; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.5;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.m{font-family:var(--f-math);font-size:1.08em;white-space:nowrap}
+header{padding-block:40px 24px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(32px,6vw,48px);line-height:1.05;margin:6px 0 12px;text-wrap:balance;letter-spacing:-.01em}
+.intro{color:var(--muted);max-width:60ch;margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--paper);border:1px solid var(--line);color:var(--muted)}
+.name-row{margin-top:20px;display:flex;flex-direction:column;gap:6px;max-width:360px}
+label.small{font-size:14px;font-weight:600;color:var(--muted)}
+input[type=text]{font:inherit;font-size:17px;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:8px;padding:9px 12px;width:100%}
+input[type=text]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-block:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:14px;padding-block:10px}
+.bar .count{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:15px}
+.track{flex:1;height:6px;border-radius:3px;background:var(--line);overflow:hidden;min-width:60px}
+.fill{height:100%;background:var(--accent);width:0;transition:width .25s}
+.clear{font:inherit;font-size:14px;font-weight:700;white-space:nowrap;background:var(--paper);color:var(--bad);border:1.5px solid var(--bad);border-radius:8px;padding:6px 12px;cursor:pointer}
+.clear.armed{background:var(--bad);color:var(--paper)}
+.clear:focus-visible{outline:3px solid var(--bad-soft);outline-offset:2px}
+.saved{font-size:13px;color:var(--muted);white-space:nowrap}
+@media (max-width:480px){.saved{display:none}}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+
+main{padding-block:24px 64px;display:flex;flex-direction:column;gap:14px}
+h2.sec{font-family:var(--f-display);font-weight:600;font-size:21px;margin:22px 0 2px;display:flex;align-items:baseline;gap:10px}
+h2.sec span{font-family:var(--f-body);font-size:14px;color:var(--muted);font-weight:600}
+.q{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.qhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.qnum{font-family:var(--f-display);font-weight:800;font-size:15px;color:var(--accent);font-variant-numeric:tabular-nums}
+.qtype{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.qtext{margin:0;min-width:0}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;cursor:pointer}
+.opt:hover{border-color:var(--accent)}
+.opt input{margin:4px 0 0;accent-color:var(--accent);flex:none}
+.opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.opt:has(input:focus-visible){box-shadow:0 0 0 3px var(--accent-soft)}
+.tf{flex-direction:row}
+.tf .opt{flex:1;justify-content:center;font-weight:700}
+.free{display:flex;gap:8px;align-items:center}
+.free input{flex:1;min-width:0}
+.sym{font:inherit;font-weight:700;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:8px;width:44px;height:44px;cursor:pointer;flex:none}
+.sym:hover{border-color:var(--accent)}
+.hint{font-size:14px;color:var(--muted);margin:-4px 0 0}
+.help-btn{font:inherit;font-weight:800;font-size:17px;width:44px;height:44px;flex:none;border-radius:50%;border:1.5px solid var(--accent);background:var(--paper);color:var(--accent);cursor:pointer}
+.help-btn[aria-expanded="true"]{background:var(--accent);color:var(--accent-ink)}
+.help-btn:focus-visible{outline:3px solid var(--accent-soft);outline-offset:2px}
+.help-box{background:var(--accent-soft);border-radius:9px;padding:12px 14px;font-size:15px;display:flex;flex-direction:column;gap:6px}
+.help-box p{margin:0}
+.help-box .ex{display:flex;flex-wrap:wrap;gap:6px}
+.help-box code,.guide code{font-family:var(--f-math);font-size:1.05em;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:1px 7px;white-space:nowrap}
+.guide{margin-top:18px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:0 16px;max-width:640px}
+.guide summary{cursor:pointer;font-weight:700;padding-block:12px;color:var(--accent)}
+.guide summary:focus-visible{outline:3px solid var(--accent-soft);border-radius:6px}
+.guide dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px 14px;margin:0 0 16px;font-size:15px}
+.guide dt{font-weight:700}
+.guide dd{margin:0;min-width:0}
+@media (max-width:480px){.guide dl{grid-template-columns:minmax(0,1fr)}.guide dd{margin-bottom:6px}}
+.pw{display:inline-flex;align-items:center;gap:4px;vertical-align:middle;font-family:var(--f-math);margin:4px 0}
+.pw .brace{font-size:2.4em;line-height:1;font-weight:400}
+.pw .rows{display:flex;flex-direction:column;gap:2px}
+.pw.three .brace{font-size:3.4em}
+
+.feedback{display:none;border-radius:9px;padding:10px 14px;font-size:15px}
+.done .feedback{display:block}
+.q.right{border-color:var(--ok)}
+.q.wrong{border-color:var(--bad)}
+.q.skip{border-color:var(--skip)}
+.right .feedback{background:var(--ok-soft)}
+.wrong .feedback{background:var(--bad-soft)}
+.skip .feedback{background:var(--skip-soft)}
+.verdict{font-weight:700;display:block;margin-bottom:2px}
+.right .verdict{color:var(--ok)} .wrong .verdict{color:var(--bad)} .skip .verdict{color:var(--skip)}
+.feedback p{margin:4px 0 0}
+.done .opt{cursor:default}
+.done .opt:hover{border-color:var(--line)}
+.done .opt.is-answer{border-color:var(--ok);background:var(--ok-soft)}
+.done .opt.picked-wrong{border-color:var(--bad);background:var(--bad-soft)}
+.filter-missed .q.right{display:none}
+
+.submit-area{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.btn{font:inherit;font-weight:700;font-size:17px;border-radius:10px;padding:13px 22px;cursor:pointer;border:1.5px solid var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:var(--paper);color:var(--accent)}
+.btn:focus-visible,.sym:focus-visible{outline:3px solid var(--accent-soft);outline-offset:2px}
+.confirm{background:var(--skip-soft);border:1px solid var(--skip);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.confirm .row{display:flex;gap:10px;flex-wrap:wrap}
+
+.results{background:var(--paper);border:2px solid var(--accent);border-radius:14px;padding:22px 20px;display:flex;flex-direction:column;gap:16px}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--f-display);font-weight:800;font-size:56px;line-height:1;font-variant-numeric:tabular-nums}
+.score .pct{font-size:20px;font-weight:700;color:var(--muted)}
+.tally{display:flex;gap:8px;flex-wrap:wrap}
+.tally .chip.ok{color:var(--ok);border-color:var(--ok)} .tally .chip.no{color:var(--bad);border-color:var(--bad)} .tally .chip.sk{color:var(--skip);border-color:var(--skip)}
+.secs{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 14px;font-size:15px;align-items:center}
+.secs .lab{min-width:0}
+.secs .val{font-variant-numeric:tabular-nums;font-weight:700;text-align:right}
+.mini{grid-column:1/-1;height:5px;border-radius:3px;background:var(--line);overflow:hidden;margin-bottom:6px}
+.mini i{display:block;height:100%;background:var(--ok)}
+.results .row{display:flex;gap:10px;flex-wrap:wrap}
+[hidden]{display:none!important}
+.figure{max-width:100%;overflow-x:auto}
+.graph{display:block;width:100%;max-width:340px;height:auto;background:var(--paper);border:1px solid var(--line);border-radius:8px}
+.graph .g-grid{stroke:var(--line);stroke-width:1}
+.graph .g-axis{stroke:var(--ink);stroke-width:1.4}
+.graph .g-axfill{fill:var(--ink)}
+.graph .g-num{fill:var(--muted);font:600 10px var(--f-body);paint-order:stroke;stroke:var(--paper);stroke-width:3px}
+.graph .g-curve{fill:none;stroke:var(--accent);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.graph .g-cfill{fill:var(--accent)}
+.graph .g-parent{fill:none;stroke:var(--muted);stroke-width:1.6;stroke-dasharray:5 4}
+.graph .g-pt{fill:var(--accent);stroke:var(--paper);stroke-width:1.5}
+.graph .g-open{fill:var(--paper);stroke:var(--accent);stroke-width:2.2}
+.graph .g-lab{fill:var(--ink);font:700 12px var(--f-math);paint-order:stroke;stroke:var(--paper);stroke-width:4px}
+.gopts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.gopts .opt{min-width:0}
+.gopts .opt>span{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
+.gopts .gl{font-family:var(--f-display);font-weight:800;color:var(--accent)}
+.gopts .graph{max-width:100%}
+@media (max-width:480px){ .q{padding:16px} .tf{flex-direction:column} body{font-size:16px} }
+.topics{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.tchip{font-size:13px;font-weight:600;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--muted)}
+.tchip.cur{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.tchip.mastered{border-color:var(--ok);color:var(--ok);background:var(--ok-soft)}
+.tchip.review{border-color:var(--skip);color:var(--skip);background:var(--skip-soft)}
+.topic-tag{margin-left:auto;font-size:13px;font-weight:700;color:var(--muted)}
+.streak{display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:13px;color:var(--muted);font-weight:600;margin-top:-4px}
+.streak i{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--muted);display:inline-block}
+.streak i.on{background:var(--ok);border-color:var(--ok)}
+.streak span{margin-left:4px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.nudge{color:var(--bad);font-size:14px;font-weight:600;margin:0;flex-basis:100%}
+.feedback .banner{font-weight:700;margin-top:8px}
+.banner.ok{color:var(--ok)} .banner.sk{color:var(--skip)}
+.secs .okc{color:var(--ok)} .secs .skc{color:var(--skip)}
+.mini i.sk{background:var(--skip)}
+.bar .count{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.bar .track{min-width:32px}
+@media (max-width:480px){.actions .btn{flex:1;padding-inline:12px;white-space:nowrap}}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="eyebrow">Algebra 2 · Unit 1</div>
+  <h1>Unit 1 Mastery Quiz</h1>
+  <p class="intro">One question at a time on five topics. Get <span data-rule="streak">3</span> right in a row to master a topic and move on. A miss resets the streak, so you keep practicing a topic until it clicks, up to <span data-rule="max">20</span> questions each. Your progress is saved on this device.</p>
+  <div class="topics" id="topics"></div>
+  <details class="guide" id="guide"><summary>How to type free-response answers</summary>
+    <dl>
+      <dt>One number</dt><dd>Type the number: <code>−5</code> <code>6.5</code> <code>7/2</code>. Leave fractions as fractions instead of rounding. Writing <code>x =</code> in front is optional.</dd>
+      <dt>Several solutions</dt><dd>Separate them with commas, in any order: <code>3, −7</code>. Leave out extraneous solutions.</dd>
+      <dt>Intervals</dt><dd>Use <code>[ ]</code> when the endpoint is included and <code>( )</code> when it isn't. Always use <code>( )</code> next to ∞: <code>[3, ∞)</code> <code>(−4, 1)</code>. Type <code>inf</code> or tap the ∞ button.</dd>
+      <dt>Equations</dt><dd>Use <code>|</code> for absolute value bars and <code>^</code> for exponents: <code>y = −4|x + 1| + 6</code> <code>y = 3(x − 1)^2 + 2</code>. Any equivalent form counts.</dd>
+    </dl>
+    <p class="hint" style="margin:0 0 14px">Tap the <strong>?</strong> next to any free-response box for help with that question.</p>
+  </details>
+</header>
+
+<div class="bar"><div class="wrap"><span class="count" id="count"></span><div class="track"><div class="fill" id="fill"></div></div><span class="saved">Saved on this device</span><button type="button" class="clear" id="clearBtn">Start over</button></div></div>
+
+<main class="wrap" id="main"></main>
+
+<script>
+const P=(rows)=>`<span class="pw${rows.length>2?' three':''}"><span class="brace">{</span><span class="rows">${rows.map(r=>`<span>${r}</span>`).join('')}</span></span>`;
+const M=s=>`<span class="m">${s}</span>`;
+const gx=`${P(["x + 4,&nbsp; x &lt; −1","−2,&nbsp; −1 ≤ x ≤ 2","2x − 7,&nbsp; x &gt; 2"])}`;
+// ---------- graph drawing ----------
+// G({x:[min,max], y:[min,max], u:px per unit, step:tick label spacing, small, alt,
+//    c:[{f | pl:[[x,y]...] | g:t=>[x,y], a, b, arr:[startArrow,endArrow], parent}], p:[{x,y,open,l,dx,dy}]})
+const fmt=n=>n<0?'−'+(-n):String(n);
+function G(o){
+  const [x0,x1]=o.x||[-6,6],[y0,y1]=o.y||[-6,6],sm=!!o.small,u=o.u||(sm?16:22),pad=sm?8:20,step=o.step||2;
+  const W=(x1-x0)*u+2*pad,H=(y1-y0)*u+2*pad,X=x=>(pad+(x-x0)*u).toFixed(1),Y=y=>(pad+(y1-y)*u).toFixed(1);
+  let s=`<svg class="graph" viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.alt||'Coordinate graph'}">`;
+  for(let i=Math.ceil(x0);i<=x1;i++)s+=`<line class="g-grid" x1="${X(i)}" y1="${Y(y1)}" x2="${X(i)}" y2="${Y(y0)}"/>`;
+  for(let j=Math.ceil(y0);j<=y1;j++)s+=`<line class="g-grid" x1="${X(x0)}" y1="${Y(j)}" x2="${X(x1)}" y2="${Y(j)}"/>`;
+  const head=(px,py,dx,dy,cls,sz)=>{const L=Math.hypot(dx,dy)||1;dx/=L;dy/=L;const bx=px-dx*sz,by=py-dy*sz,nx=-dy*sz*.55,ny=dx*sz*.55;return `<polygon class="${cls}" points="${px.toFixed(1)},${py.toFixed(1)} ${(bx+nx).toFixed(1)},${(by+ny).toFixed(1)} ${(bx-nx).toFixed(1)},${(by-ny).toFixed(1)}"/>`;};
+  if(y0<=0&&y1>=0){s+=`<line class="g-axis" x1="${X(x0)}" y1="${Y(0)}" x2="${X(x1)}" y2="${Y(0)}"/>`+head(+X(x1)+4,+Y(0),1,0,'g-axfill',7)+head(+X(x0)-4,+Y(0),-1,0,'g-axfill',7);}
+  if(x0<=0&&x1>=0){s+=`<line class="g-axis" x1="${X(0)}" y1="${Y(y0)}" x2="${X(0)}" y2="${Y(y1)}"/>`+head(+X(0),+Y(y1)-4,0,-1,'g-axfill',7)+head(+X(0),+Y(y0)+4,0,1,'g-axfill',7);}
+  if(!sm){
+    for(let i=Math.ceil(x0/step)*step;i<=x1;i+=step)if(i!==0&&i!==x0&&i!==x1)s+=`<text class="g-num" x="${X(i)}" y="${+Y(0)+13}" text-anchor="middle">${fmt(i)}</text>`;
+    for(let j=Math.ceil(y0/step)*step;j<=y1;j+=step)if(j!==0&&j!==y0&&j!==y1)s+=`<text class="g-num" x="${+X(0)-5}" y="${+Y(j)+3.5}" text-anchor="end">${fmt(j)}</text>`;
+  }
+  (o.c||[]).forEach(c=>{
+    let pts;
+    if(c.pl)pts=c.pl;
+    else{const g=c.g||(t=>[t,c.f(t)]),a=c.a??x0,b=c.b??x1;pts=[];for(let k=0;k<=160;k++){const t=a+(b-a)*k/160;pts.push(g(t));}}
+    const sp=pts.map(([x,y])=>[+X(x),+Y(y)]);
+    s+=`<path class="${c.parent?'g-parent':'g-curve'}" d="M${sp.map(p=>p.join(',')).join(' L')}"/>`;
+    if(!c.parent){const arr=c.arr||[true,true],n=sp.length;
+      if(arr[0])s+=head(sp[0][0],sp[0][1],sp[0][0]-sp[1][0],sp[0][1]-sp[1][1],'g-cfill',sm?8:10);
+      if(arr[1])s+=head(sp[n-1][0],sp[n-1][1],sp[n-1][0]-sp[n-2][0],sp[n-1][1]-sp[n-2][1],'g-cfill',sm?8:10);}
+  });
+  (o.p||[]).forEach(p=>{
+    s+=`<circle class="${p.open?'g-open':'g-pt'}" cx="${X(p.x)}" cy="${Y(p.y)}" r="${sm?3.6:4.4}"/>`;
+    if(p.l)s+=`<text class="g-lab" x="${+X(p.x)+(p.dx??7)}" y="${+Y(p.y)+(p.dy??-8)}" text-anchor="${p.anchor||'start'}">${p.l}</text>`;
+  });
+  return s+'</svg>';
+}
+// Q49 options: g(x) with different open/closed endpoints at (−1,3), (−1,−2), (2,−2), (2,−3)
+const gG=(o1,o2,o3,o4,alt)=>G({x:[-5,5],y:[-4,4],small:true,alt,
+  c:[{pl:[[-5,-1],[-1,3]],arr:[true,false]},{pl:[[-1,-2],[2,-2]],arr:[false,false]},{pl:[[2,-3],[4.5,2]],arr:[false,true]}],
+  p:[{x:-1,y:3,open:o1},{x:-1,y:-2,open:o2},{x:2,y:-2,open:o3},{x:2,y:-3,open:o4}]});
+// shared graph for the domain/range pair
+const drGraph=()=>G({x:[-6,5],y:[-3,6],step:1,alt:"Graph of a function from a closed point at (−5, −1) up to (−1, 4) and down to an open point at (3, 0)",
+  c:[{pl:[[-5,-1],[-1,4],[3,0]],arr:[false,false]}],p:[{x:-5,y:-1},{x:3,y:0,open:true}]});
+
+const TYPE_LABEL={mc:"Multiple choice",tf:"True / false",num:"Free response",nums:"Free response",interval:"Free response",expr:"Free response",text:"Short answer"};
+const HINTS={num:"Type one number. Fractions like 7/2 are fine.",nums:"Type every solution, separated by commas.",interval:"Use interval notation. Tap ∞ or type inf.",expr:"Type the equation. Use | for absolute value and ^ for exponents.",text:"Type a word or short phrase. Spelling counts, capitals don't."};
+const PH={num:"e.g. 7/2",nums:"e.g. 3, −7",interval:"e.g. [3, ∞)",expr:"e.g. y = −4|x + 1| + 6",text:"Type your answer"};
+const HELP={
+ num:`<p><strong>Type a single number.</strong> Negatives can use − or -. Decimals that end are fine, like <code>6.5</code>. If the decimal repeats, type the fraction instead: <code>1/3</code>, not 0.33.</p><div class="ex"><code>−5</code><code>6.5</code><code>7/2</code><code>x = 1</code></div>`,
+ nums:`<p><strong>Type every solution, separated by commas.</strong> Order doesn't matter. You can write <code>x =</code> or <code>or</code> between them. Check each answer and leave out extraneous ones.</p><div class="ex"><code>3, −7</code><code>x = 5/2 or x = −1</code></div>`,
+ interval:`<p><strong>Use interval notation.</strong> A bracket <code>[ ]</code> means the endpoint is included; a parenthesis <code>( )</code> means it isn't. Infinity always gets a parenthesis. Tap <strong>∞</strong> or type <code>inf</code>; tap <strong>∪</strong> to join two intervals. An inequality like <code>y ≥ 3</code> also works.</p><div class="ex"><code>[3, ∞)</code><code>(−4, 1)</code><code>(−∞, 0] ∪ [2, ∞)</code></div>`,
+ expr:`<p><strong>Type the whole equation.</strong> Use <code>|</code> for absolute value bars (Shift + \\ on a keyboard), <code>^</code> for exponents, and parentheses around the inside of a square. <code>y =</code> is optional and any equivalent form is marked correct.</p><div class="ex"><code>y = −4|x + 1| + 6</code><code>y = 3(x − 1)^2 + 2</code></div>`,
+ text:`<p><strong>Type a word or short phrase.</strong> Capitals and extra spaces don't matter, and you can leave off “the” or “a”. Spelling counts, though one small typo in a long word is forgiven.</p>`
+};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+// ---------- mastery rules ----------
+// streak: correct answers in a row to master a topic. max: questions per topic before moving on.
+// retryGap: a missed fixed question can come back after this many other questions in its topic.
+const RULES={streak:3,max:20,retryGap:3};
+
+// ---------- seeded randomness (so a saved question regenerates identically after reload) ----------
+function rng(seed){let s=seed>>>0;const next=()=>{s=(s+0x6D2B79F5)>>>0;let t=s;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296;};
+  const r={next,int:(lo,hi)=>lo+Math.floor(next()*(hi-lo+1)),pick:a=>a[Math.floor(next()*a.length)],
+    nz:(lo,hi)=>{let v;do v=r.int(lo,hi);while(v===0);return v;},
+    shuffle:a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(next()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}};
+  return r;}
+// Multiple-choice helper for generators: drops duplicate or empty options, keeps up to 3 wrong ones, shuffles.
+function mcOpts(r,correct,wrongs){const seen=new Set([correct]),w=[];for(const x of wrongs){if(x&&!seen.has(x)){seen.add(x);w.push(x);}if(w.length===3)break;}const o=r.shuffle([correct,...w]);return{o,a:o.indexOf(correct)};}
+// Formatting helpers: real minus signs, tidy linear terms, shifts.
+const n=v=>v<0?'−'+(-v):String(v);
+const lin=(a,b,v='x')=>a===0?n(b):(a===1?v:a===-1?'−'+v:n(a)+v)+(b>0?' + '+b:b<0?' − '+(-b):'');
+const sh=(h,v='x')=>h===0?v:h>0?`${v} − ${h}`:`${v} + ${-h}`;
+const pk=k=>k===0?'':k>0?` + ${k}`:` − ${-k}`;
+const coef=a=>a===1?'':a===-1?'−':n(a);
+const OPH={'<':'&lt;','>':'&gt;','≤':'≤','≥':'≥'};
+
+// ---------- content ----------
+const KEY='studyguides-math-algebra-2-unit-1-mastery-v1';
+// Each topic: name, qs (fixed questions, same fields as the classic quiz minus s), gen (functions r => question).
+// Generators get a seeded r: r.int(lo,hi), r.nz(lo,hi) (non-zero), r.pick(arr), r.shuffle(arr), r.next().
+// Every generated question must have a correct key for every seed; mcOpts(r, correct, wrongs) builds MC options.
+function ineq(m,d,op){const lo=m-d,hi=m+d,inside=op==='<'||op==='≤',cl=op==='≤'||op==='≥';let ans,acc,why;
+  if(inside){ans=`${cl?'[':'('}${n(lo)}, ${n(hi)}${cl?']':')'}`;const s=cl?'<=':'<';acc=[ans,`${lo}${s}x${s}${hi}`];
+    why=`Less than means one connected piece: ${M(`−${d} ${OPH[op]} ${sh(m)} ${OPH[op]} ${d}`)}, so ${M(`${n(lo)} ${OPH[op]} x ${OPH[op]} ${n(hi)}`)}.`;}
+  else{const a=cl?'<=':'<',b=cl?'>=':'>',rv=cl?'≤':'&lt;';ans=`(−∞, ${n(lo)}${cl?']':')'} ∪ ${cl?'[':'('}${n(hi)}, ∞)`;acc=[ans,`x${a}${lo}orx${b}${hi}`,`x${b}${hi}orx${a}${lo}`];
+    why=`Greater than means two pieces joined by “or”: ${M(`${sh(m)} ${rv} −${d}`)} or ${M(`${sh(m)} ${OPH[op]} ${d}`)}, so ${M(`x ${rv} ${n(lo)}`)} or ${M(`x ${OPH[op]} ${n(hi)}`)}.`;}
+  if(cl)why+=' Use brackets because the endpoints are included.';
+  return{ans,acc,why};}
+
+const TOPICS=[
+{name:"Function notation",
+ qs:[
+  {t:"nums",q:`Use the graph of ${M("f")} to solve ${M("f(x) = 3")}. Enter every x-value.`,g:G({x:[-5,7],y:[-3,6],step:1,alt:"Downward V with vertex (1, 4)",c:[{pl:[[-4,-1],[1,4],[6,-1]]}]}),a:[0,2],ans:"0, 2",ex:"Find where the graph has height 3: at x = 0 and x = 2. Imagine the horizontal line y = 3 and see where it crosses."},
+  {t:"tf",q:`If ${M("f(3) = 7")}, then the point ${M("(3, 7)")} is on the graph of ${M("f")}.`,a:true,ex:"f(3) = 7 means input 3 gives output 7, which is the point (x, y) = (3, 7)."}
+ ],
+ gen:[
+  r=>{const a=r.nz(-3,3),b=r.int(-9,9),c=r.nz(-4,4),v=a*c*c+b;
+    return{t:'num',q:`Let ${M(`f(x) = ${coef(a)}x²${pk(b)}`)}. Find ${M(`f(${n(c)})`)}.`,a:v,ans:n(v),
+      ex:`Replace x with ${n(c)} and square first: ${c<0?`(${n(c)})²`:`${c}²`} = ${c*c}. Then ${n(a)} · ${c*c}${pk(b)} = ${n(v)}.`};},
+  r=>{const m=r.nz(-4,5),b=r.int(-8,8),k=r.nz(-4,4),ok=lin(m,m*k+b);
+    const o=mcOpts(r,ok,[lin(m,k+b),lin(m,b-m*k),lin(m,m*k),lin(-m,m*k+b),lin(m,m*k+b+1)]);
+    return{t:'mc',q:`Let ${M(`h(x) = ${lin(m,b)}`)}. What is ${M(`h(${sh(-k)})`)}?`,o:o.o.map(M),a:o.a,
+      ex:`Replace every x with (${sh(-k)}): ${M(`${coef(m)}(${sh(-k)})${pk(b)} = ${lin(m,m*k)}${pk(b)} = ${ok}`)}. Distribute to both terms.`};},
+  r=>{const x=r.int(1,5),a=r.nz(-3,3),b=r.int(-9,9),v=a*x*x+b;
+    return{t:'nums',q:`Let ${M(`f(x) = ${coef(a)}x²${pk(b)}`)}. Solve ${M(`f(x) = ${n(v)}`)}. Enter every solution.`,a:[x,-x],ans:`${x}, −${x}`,
+      ex:`Set ${M(`${coef(a)}x²${pk(b)} = ${n(v)}`)}. Undo the ${pk(b)?'constant, then the coefficient':'coefficient'}: ${M(`x² = ${x*x}`)}, so ${M(`x = ±${x}`)}.`};}
+ ]},
+{name:"Transformations",
+ qs:[
+  {t:"tf",q:`In ${M("y = a·f(x − h) + k")}, ${M("a = 0.4")} gives a vertical stretch.`,a:false,ex:"0 < a < 1 is a vertical compression (wider, flatter). a > 1 is a stretch."},
+  {t:"mc",q:`The graph of ${M("y = f(−x)")} is the graph of ${M("f(x)")} reflected over the…`,o:["y-axis","x-axis","line y = x","origin"],a:0,ex:"A negative inside, on x, reflects left-right over the y-axis. A negative outside, −f(x), reflects over the x-axis."},
+  {t:"mc",q:`Compared with ${M("f(x)")}, the graph of ${M("y = f(2x)")} is…`,o:["a horizontal compression by ½","a horizontal stretch by 2","a vertical stretch by 2","a vertical compression by ½"],a:0,ex:"A number multiplied inside, on x, acts horizontally and backwards: a > 1 compresses toward the y-axis."}
+ ],
+ gen:[
+  r=>{const h=r.int(-3,3),k=r.int(-5,2),s=Math.min(2.6,Math.sqrt(5.8-k)),eq=`y = ${h===0?'x²':`(${sh(h)})²`}${pk(k)}`;
+    return{t:'expr',q:`Write an equation for the parabola shown. Assume ${M('a = 1')}.`,
+      g:G({x:[-6,6],y:[-6,6],alt:`Upward parabola with vertex (${n(h)}, ${n(k)})`,c:[{f:x=>(x-h)**2+k,a:h-s,b:h+s}],p:[{x:h,y:k,l:`(${n(h)}, ${n(k)})`,dx:8,dy:k<-3?-8:14}]}),
+      f:x=>(x-h)**2+k,ans:eq,ex:`The vertex is (h, k) = (${n(h)}, ${n(k)}), so ${eq}. Inside the parentheses the sign is the opposite of h.`};},
+  r=>{const a=r.pick([-3,-2,-1,2,3,0.5,-0.5]),h=r.nz(-5,5),k=r.nz(-6,6),ab=Math.abs(a),neg=a<0,A=a===0.5?'½':a===-0.5?'−½':coef(a);
+    const sc=ab===1?null:ab>1?`vertical stretch by ${ab}`:'vertical compression by ½',sc2=ab===1?null:ab>1?`vertical compression by ${ab}`:'vertical stretch by ½';
+    const hd=h>0?`right ${h}`:`left ${-h}`,hd2=h>0?`left ${h}`:`right ${-h}`,vd=k>0?`up ${k}`:`down ${-k}`,vd2=k>0?`down ${k}`:`up ${-k}`;
+    const d=(rf,s,x,y)=>{const t=[rf?'reflected over the x-axis':null,s,x,y].filter(Boolean).join(', ');return t[0].toUpperCase()+t.slice(1);};
+    const ok=d(neg,sc,hd,vd),o=mcOpts(r,ok,[d(neg,sc,hd2,vd),d(!neg,sc,hd,vd),d(neg,sc2,hd,vd2),d(neg,sc,hd2,vd2),d(!neg,sc,hd2,vd)]);
+    return{t:'mc',q:`Which describes ${M(`y = ${A}(${sh(h)})²${pk(k)}`)} compared with ${M('y = x²')}?`,o:o.o,a:o.a,
+      ex:`${neg?'The negative a reflects it over the x-axis. ':''}${ab===1?'':ab>1?`|a| = ${ab} is more than 1, so it stretches. `:'|a| = ½ is less than 1, so it compresses. '}Inside, ${M(sh(h))} means ${hd}. Outside, ${M(k>0?'+'+k:n(k))} means ${vd}.`};},
+  r=>{const h=r.nz(-6,6),truth=r.next()<0.5,dirOk=h>0?'right':'left',dir=truth?dirOk:(h>0?'left':'right'),abs=r.next()<0.5;
+    const f=abs?`|${sh(h)}|`:`(${sh(h)})²`,base=abs?'|x|':'x²';
+    return{t:'tf',q:`${M(`y = ${f}`)} is the graph of ${M(`y = ${base}`)} shifted ${Math.abs(h)} units ${dir}.`,a:truth,
+      ex:`Inside, the sign is the opposite: ${M(sh(h))} means h = ${n(h)}, which is ${dirOk} ${Math.abs(h)}.`};}
+ ]},
+{name:"Absolute value equations",
+ qs:[
+  {t:"mc",q:`Solve ${M("|x + 3| = 2x")}.`,o:[M("x = 3 only"),M("x = 3 and x = −1"),M("x = −1 only"),"No solution"],a:0,ex:"x + 3 = 2x gives 3. x + 3 = −2x gives −1, but checking: |2| = 2 while 2(−1) = −2. So −1 is extraneous."},
+  {t:"tf",q:"When solving an absolute value equation, you must isolate the absolute value before splitting into two cases.",a:true,ex:"Split only once the bars are alone on one side, like |A| = k."},
+  {t:"num",q:`Solve ${M("|x − 5| = 3x + 1")}. One case gives an extraneous solution. Enter the only valid solution.`,a:1,ans:"1",ex:"x − 5 = 3x + 1 gives x = −3, but then the right side is −8, so it's extraneous. x − 5 = −(3x + 1) gives x = 1, which checks: |−4| = 4."}
+ ],
+ gen:[
+  r=>{const a=r.int(1,3),m=r.int(-5,5),d=r.int(1,6),b=-a*m,c=a*d;
+    return{t:'nums',q:`Solve ${M(`|${lin(a,b)}| = ${c}`)}.`,a:[m+d,m-d],ans:`${n(m+d)}, ${n(m-d)}`,
+      ex:`Split into two cases. ${M(`${lin(a,b)} = ${c}`)} gives ${M(`x = ${n(m+d)}`)}, and ${M(`${lin(a,b)} = −${c}`)} gives ${M(`x = ${n(m-d)}`)}.`};},
+  r=>{const a=r.int(1,3),m=r.int(-4,4),d=r.int(1,5),b=-a*m,c=a*d,p=r.pick([-3,-2,2,3,4]),q=r.nz(-9,9),rr=p*c+q;
+    return{t:'nums',q:`Solve ${M(`${coef(p)}|${lin(a,b)}|${pk(q)} = ${n(rr)}`)}.`,a:[m+d,m-d],ans:`${n(m+d)}, ${n(m-d)}`,
+      ex:`Isolate the absolute value first: ${M(`${coef(p)}|${lin(a,b)}| = ${n(rr-q)}`)}, so ${M(`|${lin(a,b)}| = ${c}`)}. Then the two cases give ${M(`x = ${n(m+d)}`)} and ${M(`x = ${n(m-d)}`)}.`};},
+  r=>{const m=r.int(-5,5),c=r.int(1,6),p=r.pick([2,3,4]),q=r.int(-5,9),rr=q-p*c;
+    const o=mcOpts(r,'No solution',[M(`x = ${n(m+c)} and x = ${n(m-c)}`),M(`x = ${n(m+c)} only`),M(`x = ${n(m-c)} only`)]);
+    return{t:'mc',q:`Solve ${M(`${p}|${sh(m)}|${pk(q)} = ${n(rr)}`)}.`,o:o.o,a:o.a,
+      ex:`Isolating gives ${M(`|${sh(m)}| = −${c}`)}. An absolute value is never negative, so there is no solution.`};}
+ ]},
+{name:"Absolute value inequalities",
+ qs:[
+  {t:"mc",q:`Solve ${M("−2|x + 1| + 5 ≤ −3")}.`,o:[M("(−∞, −5] ∪ [3, ∞)"),M("[−5, 3]"),M("(−5, 3)"),M("(−∞, −3] ∪ [5, ∞)")],a:0,ex:"−2|x + 1| ≤ −8. Dividing by −2 flips the sign: |x + 1| ≥ 4. Greater than means “or”: x ≤ −5 or x ≥ 3."},
+  {t:"mc",q:`Solve ${M("|2x + 1| ≥ 5")}.`,o:[M("x ≤ −3 or x ≥ 2"),M("−3 ≤ x ≤ 2"),M("x ≤ −2 or x ≥ 3"),M("x ≥ 2 only")],a:0,ex:"2x + 1 ≥ 5 gives x ≥ 2. 2x + 1 ≤ −5 gives x ≤ −3."}
+ ],
+ gen:[
+  r=>{const m=r.int(-5,5),d=r.int(1,6),op=r.pick(['<','≤','>','≥']),I=ineq(m,d,op);
+    return{t:'interval',q:`Solve ${M(`|${sh(m)}| ${OPH[op]} ${d}`)}. Give the answer in interval notation.`,acc:I.acc,ans:I.ans,ex:I.why};},
+  r=>{const m=r.int(-4,4),d=r.int(1,5),p=r.pick([2,3,-2,-3]),q=r.nz(-8,8),op=r.pick(['<','≤','>','≥']),flip={'<':'>','>':'<','≤':'≥','≥':'≤'};
+    const op0=p<0?flip[op]:op,I=ineq(m,d,op);
+    return{t:'interval',q:`Solve ${M(`${n(p)}|${sh(m)}|${pk(q)} ${OPH[op0]} ${n(p*d+q)}`)}. Give the answer in interval notation.`,acc:I.acc,ans:I.ans,
+      ex:`Isolate the absolute value: ${M(`${n(p)}|${sh(m)}| ${OPH[op0]} ${n(p*d)}`)}. Divide by ${n(p)}${p<0?', which flips the inequality sign':''}: ${M(`|${sh(m)}| ${OPH[op]} ${d}`)}. ${I.why}`};},
+  r=>{const m=r.int(-5,5),d=r.int(1,5),k=r.int(0,3),lt=k===0||k===3,claim=k<2?'has no solution':'is true for all real numbers';
+    return{t:'tf',q:`${M(`|${sh(m)}| ${lt?'&lt;':'&gt;'} −${d}`)} ${claim}.`,a:k===0||k===2,
+      ex:lt?'An absolute value is never negative, so it can never be less than a negative number: no solution.':'An absolute value is always 0 or more, so it is always greater than a negative number: every real number works.'};}
+ ]},
+{name:"Piecewise functions",
+ qs:[
+  {t:"mc",q:"Which piecewise function matches the graph?",g:G({x:[-4,8],y:[-2,7],step:1,alt:"Upward V with vertex (2, 1), slopes −1 and 1",c:[{pl:[[-3,6],[2,1],[7,6]]}],p:[{x:2,y:1,l:"(2, 1)",dx:8,dy:14}]}),o:[P(["−x + 3,&nbsp; x &lt; 2","x − 1,&nbsp; x ≥ 2"]),P(["x − 1,&nbsp; x &lt; 2","−x + 3,&nbsp; x ≥ 2"]),P(["−x + 1,&nbsp; x &lt; 2","x + 1,&nbsp; x ≥ 2"]),P(["−x − 1,&nbsp; x &lt; 2","x − 3,&nbsp; x ≥ 2"])],a:0,ex:"The left side falls with slope −1 and the right rises with slope 1, splitting at x = 2. Both pieces must pass through the vertex (2, 1): −2 + 3 = 1 and 2 − 1 = 1. As one function, it's y = |x − 2| + 1."},
+  {t:"mc",go:true,q:`Which graph correctly shows the same ${M("g(x)")}? Look closely at the open and closed circles.`,o:[
+  gG(false,true,false,true,"Piecewise graph, version A"),
+  gG(false,true,true,false,"Piecewise graph, version B"),
+  gG(true,false,false,true,"Piecewise graph, version C"),
+  gG(true,false,true,false,"Piecewise graph, version D")],a:2,ex:"x + 4 uses x < −1, so (−1, 3) is open. The middle piece uses ≤ on both ends, so (−1, −2) and (2, −2) are closed. 2x − 7 uses x > 2, so (2, −3) is open. Only graph C has all four right."},
+  {t:"num",q:"A cyclist rides at 12 mph for 20 minutes, stops for 10 minutes, then rides at 15 mph. How many miles has she gone after 40 minutes?",a:6.5,ans:"6.5",ex:"12 mph = 0.2 mi/min, so 4 miles in 20 min. No distance during the stop. 15 mph = 0.25 mi/min for the last 10 min = 2.5 miles. Total 6.5."}
+ ],
+ gen:[
+  r=>{const s=r.int(-3,3),a1=r.nz(-3,3),b1=r.int(-6,6),a2=r.nz(-3,3),b2=r.int(-6,6),li=r.next()<0.5,c=r.pick([s,s,s-1,s+1,s-2,s+2]);
+    const left=li?c<=s:c<s,v=left?a1*c+b1:a2*c+b2,o1=li?'≤':'&lt;',o2=li?'&gt;':'≥';
+    const g=P([`${lin(a1,b1)},&nbsp; x ${o1} ${n(s)}`,`${lin(a2,b2)},&nbsp; x ${o2} ${n(s)}`]);
+    return{t:'num',q:`Let ${M('g(x) =')} ${g} Find ${M(`g(${n(c)})`)}.`,a:v,ans:n(v),
+      ex:`${M(`${n(c)} ${left?o1:o2} ${n(s)}`)}, so use the ${left?'top':'bottom'} piece: ${M(left?lin(a1,b1):lin(a2,b2))} at ${M(`x = ${n(c)}`)} gives ${n(v)}.${c===s?' At the break point, use the piece whose condition has the equal sign.':''}`};},
+  r=>{const s1=r.int(-4,-1),s2=r.int(1,4),k=r.int(-5,5),a1=r.nz(-3,3),b1=r.int(-5,5),a2=r.nz(-3,3),b2=r.int(-6,6),c=r.pick([s1,s2,s1-1,s2+1,0]);
+    const pc=c<s1?0:c<=s2?1:2,v=[a1*c+b1,k,a2*c+b2][pc];
+    const g=P([`${lin(a1,b1)},&nbsp; x &lt; ${n(s1)}`,`${n(k)},&nbsp; ${n(s1)} ≤ x ≤ ${n(s2)}`,`${lin(a2,b2)},&nbsp; x &gt; ${n(s2)}`]);
+    return{t:'num',q:`Let ${M('g(x) =')} ${g} Find ${M(`g(${n(c)})`)}.`,a:v,ans:n(v),
+      ex:`x = ${n(c)} belongs to the ${['top','middle','bottom'][pc]} piece${pc===1?', which is the constant '+n(k)+' for every x in it':''}, so ${M(`g(${n(c)}) = ${n(v)}`)}.${c===s1||c===s2?' The ≤ signs put the break points in the middle piece.':''}`};}
+ ]}
+];
+
+
+// ---------- grading ----------
+const clean=s=>s.toLowerCase().replace(/\s+/g,'').replace(/[−–—]/g,'-');
+function parseNum(s){s=clean(s).replace(/^[a-z]=/,'');let m;if((m=s.match(/^(-?\d*\.?\d+)\/(-?\d*\.?\d+)$/)))return parseFloat(m[1])/parseFloat(m[2]);if(/^-?(\d+\.?\d*|\.\d+)$/.test(s))return parseFloat(s);return NaN;}
+const close=(a,b)=>Math.abs(a-b)<1e-6;
+function gradeNums(s,ans){const parts=clean(s).replace(/[a-z]=/g,'').replace(/or|and/g,',').split(/[,;]/).filter(Boolean);const v=parts.map(parseNum);if(!v.length||v.some(isNaN)||v.length!==ans.length)return false;const a=[...ans].sort((x,y)=>x-y);v.sort((x,y)=>x-y);return v.every((x,k)=>close(x,a[k]));}
+const normInt=s=>clean(s).replace(/infinity|inf|oo/g,'∞').replace(/\+∞/g,'∞').replace(/≥/g,'>=').replace(/≤/g,'<=').replace(/∪/g,'u');
+function gradeExpr(s,f){
+  s=clean(s).replace(/²/g,'^2').replace(/^(y|[a-z]\(x\))=/,'');
+  for(let k=0;k<4&&/\|/.test(s);k++)s=s.replace(/\|([^|]+)\|/,'A($1)');
+  if(/\|/.test(s)||!/^[0-9x+\-*/().^A]+$/.test(s))return false;
+  s=s.replace(/(\d|\)|x)(?=[(xA])/g,'$1*').replace(/\)(?=[\d.])/g,')*').replace(/x(?=[\d.])/g,'x*').replace(/(^|[(+\-*/])-(?=[(xA])/g,'$1-1*').replace(/\^/g,'**');
+  let g;try{g=new Function('x','A','"use strict";return ('+s+');');}catch(e){return false;}
+  try{return [-3.7,-1.2,0.3,2.9,5.1,7.4].every(x=>{const u=g(x,Math.abs),v=f(x);return Number.isFinite(u)&&Math.abs(u-v)<1e-6*Math.max(1,Math.abs(v));});}catch(e){return false;}
+}
+const NUMW={zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,twenty:20};
+const normText=s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim().replace(/^(the|a|an) /,'').split(' ').map(w=>Object.hasOwn(NUMW,w)?String(NUMW[w]):w).join(' ');
+function oneEdit(a,b){if(Math.abs(a.length-b.length)>1)return false;let i=0,j=0,e=0;while(i<a.length&&j<b.length){if(a[i]===b[j]){i++;j++;continue;}if(++e>1)return false;if(a.length>b.length)i++;else if(b.length>a.length)j++;else{i++;j++;}}return e+(a.length-i)+(b.length-j)<=1;}
+function gradeText(v,acc){const x=normText(v);return acc.some(a=>{const y=normText(a);return x===y||(y.length>6&&oneEdit(x,y));});}
+function grade(q,v){
+  if(q.t==='mc')return +v===q.a;if(q.t==='tf')return (v==='0')===q.a;
+  if(q.t==='num'){const x=parseNum(v);return !isNaN(x)&&close(x,q.a);}
+  if(q.t==='nums')return gradeNums(v,q.a);if(q.t==='interval')return q.acc.map(normInt).includes(normInt(v));
+  if(q.t==='expr')return gradeExpr(v,q.f);if(q.t==='text')return gradeText(v,q.acc);return false;}
+function correctText(q){if(q.t==='mc')return q.go?`Graph ${'ABCD'[q.a]} (highlighted in green above)`:q.o[q.a];if(q.t==='tf')return q.a?'True':'False';return M(esc(q.ans));}
+function yourText(q,v){if(q.t==='mc')return q.o[+v];if(q.t==='tf')return v==='0'?'True':'False';return `<span class="m">${esc(v)}</span>`;}
+
+// ---------- state ----------
+const main=document.getElementById('main');
+let S,CUR=null;
+function fresh(){return{v:1,round:TOPICS.map((_,i)=>i),ri:0,n:0,right:0,done:false,cur:null,ans:'',res:null,
+  topics:TOPICS.map(()=>({asked:0,correct:0,streak:0,status:'todo',used:{},seen:[],last:null}))};}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(d&&d.v===1&&Array.isArray(d.topics)&&d.topics.length===TOPICS.length)return d;}catch(e){}return null;}
+const hash=s=>{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))|0;return h;};
+
+// Build the question a saved reference points at. Fixed questions come from qs; generated ones from gen with a seed.
+function make(ref){
+  const T=TOPICS[ref.ti],r=rng(ref.seed);
+  const q=ref.src==='s'?{...T.qs[ref.idx]}:T.gen[ref.idx](r);
+  if(q.t==='mc'&&!q.go&&!q.keep){const ord=r.shuffle(q.o.map((_,j)=>j));q.o=ord.map(j=>q.o[j]);q.a=ord.indexOf(q.a);}
+  return q;}
+
+// Choose the next question in a topic: unused fixed questions first, missed ones again after a gap, generators any time.
+function pick(ti){
+  const T=TOPICS[ti],st=S.topics[ti],c=[];
+  (T.qs||[]).forEach((_,i)=>{const u=st.used[i];if(!u)c.push({src:'s',idx:i,w:3});else if(u.wrong&&st.asked-u.at>=RULES.retryGap)c.push({src:'s',idx:i,w:2});});
+  (T.gen||[]).forEach((_,i)=>c.push({src:'g',idx:i,w:2}));
+  let pool=c.filter(x=>!st.last||x.src!==st.last.src||x.idx!==st.last.idx);if(!pool.length)pool=c;
+  if(!pool.length)return null;
+  for(let tries=0;tries<15;tries++){
+    const tot=pool.reduce((s,x)=>s+x.w,0);let r=Math.random()*tot,ch=pool[pool.length-1];for(const x of pool){r-=x.w;if(r<=0){ch=x;break;}}
+    const ref={ti,src:ch.src,idx:ch.idx,seed:Math.floor(Math.random()*4294967296)};
+    if(ref.src==='s')return ref;
+    const q=make(ref),h=hash(q.q+'|'+(q.o||[]).join('|'));
+    if(!st.seen.includes(h)||tries===14){st.seen.push(h);if(st.seen.length>300)st.seen.shift();return ref;}
+  }}
+
+function nextQuestion(){
+  while(S.ri<S.round.length){
+    const ti=S.round[S.ri],st=S.topics[ti];
+    if(st.status==='todo'||st.status==='active'){
+      st.status='active';const ref=pick(ti);
+      if(ref){S.cur=ref;S.ans='';S.res=null;st.last={src:ref.src,idx:ref.idx};save();render(true);return;}
+      st.status='review';}
+    S.ri++;}
+  S.done=true;S.cur=null;S.res=null;save();render(true);}
+
+function getAns(){if(!CUR)return '';if(CUR.t==='mc'||CUR.t==='tf'){const r=main.querySelector('input[name=ans]:checked');return r?r.value:'';}const el=document.getElementById('ans');return el?el.value.trim():'';}
+function finish(res){
+  const st=S.topics[S.cur.ti];S.res=res;S.n++;st.asked++;
+  if(res==='right'){S.right++;st.correct++;st.streak++;}else st.streak=0;
+  if(S.cur.src==='s')st.used[S.cur.idx]={at:st.asked,wrong:res!=='right'};
+  if(st.streak>=RULES.streak)st.status='mastered';else if(st.asked>=RULES.max)st.status='review';
+  save();render(false);}
+function check(){if(S.res)return;const v=getAns();if(!v){const nd=document.getElementById('nudge');nd.hidden=false;return;}S.ans=v;finish(grade(CUR,v)?'right':'wrong');}
+function reveal(){if(S.res)return;S.ans=getAns();finish('shown');}
+function advance(){const st=S.topics[S.cur.ti];if(st.status!=='active')S.ri++;nextQuestion();}
+function practiceAgain(){const r=TOPICS.map((_,i)=>i).filter(i=>S.topics[i].status==='review');
+  r.forEach(i=>Object.assign(S.topics[i],{asked:0,correct:0,streak:0,status:'todo',used:{}}));S.round=r;S.ri=0;S.done=false;nextQuestion();}
+function restart(){S=fresh();nextQuestion();}
+
+// ---------- rendering ----------
+function chips(){
+  const cur=S.done?-1:S.round[S.ri];
+  document.getElementById('topics').innerHTML=TOPICS.map((T,i)=>{const st=S.topics[i].status,cls=st==='mastered'?'mastered':st==='review'?'review':i===cur?'cur':'';
+    const mark=st==='mastered'?'✓ ':st==='review'?'↻ ':'';return `<span class="tchip ${cls}">${mark}${T.name}</span>`;}).join('');
+  const m=S.topics.filter(t=>t.status==='mastered').length;
+  document.getElementById('fill').style.width=(m/TOPICS.length*100)+'%';
+  document.getElementById('count').textContent=S.done?`${m} of ${TOPICS.length} topics mastered`:`Question ${S.res?S.n:S.n+1} · ${m}/${TOPICS.length} mastered`;}
+
+function render(scroll){
+  chips();
+  if(S.done){renderResults();return;}
+  CUR=make(S.cur);const q=CUR,st=S.topics[S.cur.ti],res=S.res,T=TOPICS[S.cur.ti];
+  let body='';
+  if(q.t==='mc')body=`<div class="opts${q.go?' gopts':''}">${q.o.map((o,j)=>`<label class="opt" data-j="${j}"><input type="radio" name="ans" id="ans_${j}" value="${j}"><span>${q.go?`<b class="gl">Graph ${'ABCD'[j]}</b>`:''}${o}</span></label>`).join('')}</div>`;
+  else if(q.t==='tf')body=`<div class="opts tf">${['True','False'].map((o,j)=>`<label class="opt" data-j="${j}"><input type="radio" name="ans" id="ans_${j}" value="${j}"><span>${o}</span></label>`).join('')}</div>`;
+  else body=`<div class="free"><input type="text" id="ans" placeholder="${PH[q.t]}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Your answer">${q.t==='interval'?`<button type="button" class="sym" data-ins="∞" aria-label="Insert infinity">∞</button><button type="button" class="sym" data-ins="∪" aria-label="Insert union">∪</button>`:''}<button type="button" class="help-btn" aria-expanded="false" aria-controls="helpBox" title="How to type this answer" aria-label="How to type this answer">?</button></div><p class="hint">${HINTS[q.t]}</p><div class="help-box" id="helpBox" hidden>${HELP[q.t]}</div>`;
+  const dots=Array.from({length:RULES.streak},(_,k)=>`<i class="${k<st.streak?'on':''}"></i>`).join('');
+  let fb='',acts='';
+  if(res){
+    fb=`<span class="verdict">${res==='right'?'Correct':res==='wrong'?'Incorrect':'Here’s the answer'}</span>`;
+    if(res!=='right'&&S.ans&&q.t!=='mc'&&q.t!=='tf')fb+=`<p>Your answer: ${yourText(q,S.ans)}</p>`;
+    if(res!=='right')fb+=`<p>Correct answer: ${correctText(q)}</p>`;
+    fb+=`<p>${q.ex}</p>`;
+    if(st.status==='mastered')fb+=`<p class="banner ok">✓ ${T.name} mastered: ${RULES.streak} in a row.</p>`;
+    else if(st.status==='review')fb+=`<p class="banner sk">That’s ${RULES.max} questions on ${T.name}. It’s marked for more practice, and you can come back to it at the end.</p>`;
+    const last=S.ri>=S.round.length-1;
+    acts=`<button class="btn primary" id="nextBtn" type="button">${st.status==='active'?'Next question':last?'See results':'Next topic'}</button>`;
+  }else acts=`<button class="btn primary" id="checkBtn" type="button">Check answer</button><button class="btn ghost" id="showBtn" type="button">Show answer</button><p class="nudge" id="nudge" hidden>Answer first, or tap Show answer to see it (that counts as a miss).</p>`;
+  main.innerHTML=`<section class="q${res?' done '+(res==='shown'?'skip':res):''}" id="card">
+    <div class="qhead"><span class="qnum">Question ${res?S.n:S.n+1}</span><span class="qtype">${TYPE_LABEL[q.t]}</span><span class="topic-tag">${T.name}</span></div>
+    <div class="streak" aria-label="${st.streak} of ${RULES.streak} correct in a row">${dots}<span>${st.streak} of ${RULES.streak} in a row · question ${res?st.asked:st.asked+1} of up to ${RULES.max} on this topic</span></div>
+    <div class="qtext">${q.q}</div>${q.g?`<div class="figure">${q.g}</div>`:''}${body}
+    <div class="feedback" id="fb">${fb}</div><div class="actions">${acts}</div></section>`;
+  const v=S.ans;
+  if(v){if(q.t==='mc'||q.t==='tf'){const r=document.getElementById('ans_'+v);if(r)r.checked=true;}else{const el=document.getElementById('ans');if(el)el.value=v;}}
+  if(res){
+    main.querySelectorAll('input,.sym').forEach(el=>el.disabled=true);
+    if(q.t==='mc'||q.t==='tf'){const ca=q.t==='mc'?q.a:(q.a?0:1);main.querySelectorAll('.opt').forEach(o=>{const j=+o.dataset.j;if(j===ca)o.classList.add('is-answer');else if(String(j)===v)o.classList.add('picked-wrong');});}
+    document.getElementById('nextBtn').focus({preventScroll:true});
+  }else if(scroll){const el=document.getElementById('ans');if(el&&matchMedia('(hover: hover)').matches)el.focus({preventScroll:true});}
+  if(scroll){const top=document.getElementById('card').getBoundingClientRect().top;if(top<0||top>innerHeight*.6)document.getElementById('card').scrollIntoView({block:'start'});}
+}
+
+function renderResults(){
+  CUR=null;const m=S.topics.filter(t=>t.status==='mastered').length,need=TOPICS.map((_,i)=>i).filter(i=>S.topics[i].status==='review');
+  let rows='';TOPICS.forEach((T,i)=>{const t=S.topics[i],pct=t.asked?t.correct/t.asked*100:0;
+    const val=t.status==='mastered'?`Mastered in ${t.asked} question${t.asked>1?'s':''}`:t.status==='review'?`Needs practice · ${t.correct} of ${t.asked} right`:'Not started';
+    rows+=`<span class="lab">${T.name}</span><span class="val ${t.status==='mastered'?'okc':t.status==='review'?'skc':''}">${val}</span><div class="mini"><i class="${t.status==='review'?'sk':''}" style="width:${pct}%"></i></div>`;});
+  main.innerHTML=`<section class="results" id="results" tabindex="-1"><div class="eyebrow">Your results</div>
+    <div class="score"><span class="big">${m} / ${TOPICS.length}</span><span class="pct">topics mastered</span></div>
+    <div class="tally"><span class="chip">${S.n} questions answered</span><span class="chip ok">${S.right} correct</span><span class="chip">${S.n?Math.round(S.right/S.n*100):0}% accuracy</span></div>
+    <div class="secs">${rows}</div>
+    <div class="row">${need.length?`<button class="btn primary" id="againBtn" type="button">Practice the ${need.length} topic${need.length>1?'s':''} that need work</button>`:''}<button class="btn ${need.length?'ghost':'primary'}" id="restartBtn" type="button">Start over</button></div></section>`;
+  document.getElementById('restartBtn').addEventListener('click',restart);
+  document.getElementById('againBtn')?.addEventListener('click',practiceAgain);
+  document.getElementById('results').focus({preventScroll:true});
+}
+
+// ---------- events ----------
+main.addEventListener('click',e=>{
+  const t=e.target;
+  if(t.closest('#checkBtn'))check();else if(t.closest('#showBtn'))reveal();else if(t.closest('#nextBtn'))advance();
+  else if(t.closest('.help-btn')){const h=t.closest('.help-btn'),box=document.getElementById('helpBox');box.hidden=!box.hidden;h.setAttribute('aria-expanded',String(!box.hidden));}
+  else if(t.closest('.sym')){const b=t.closest('.sym'),inp=document.getElementById('ans');if(inp.disabled)return;const s=inp.selectionStart??inp.value.length,u=inp.selectionEnd??inp.value.length;inp.value=inp.value.slice(0,s)+b.dataset.ins+inp.value.slice(u);inp.focus();inp.setSelectionRange(s+1,s+1);S.ans=inp.value;save();}
+});
+main.addEventListener('input',()=>{if(S.res||!CUR)return;S.ans=getAns();save();const nd=document.getElementById('nudge');if(nd)nd.hidden=true;});
+main.addEventListener('change',()=>{if(S.res||!CUR)return;S.ans=getAns();save();const nd=document.getElementById('nudge');if(nd)nd.hidden=true;});
+main.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='ans'&&!S.res){e.preventDefault();check();}});
+const clearBtn=document.getElementById('clearBtn');let clearTimer;
+function disarm(){clearBtn.classList.remove('armed');clearBtn.textContent='Start over';clearTimeout(clearTimer);}
+clearBtn.addEventListener('click',()=>{if(!clearBtn.classList.contains('armed')){clearBtn.classList.add('armed');clearBtn.textContent='Tap again to start over';clearTimer=setTimeout(disarm,4000);return;}disarm();restart();window.scrollTo({top:0});});
+document.querySelectorAll('[data-rule]').forEach(el=>el.textContent=RULES[el.dataset.rule]);
+
+S=load();
+if(!S){S=fresh();nextQuestion();}
+else if(S.done)render(false);
+else if(!S.cur)nextQuestion();
+else render(false);
+window.quiz={state:()=>S,question:()=>CUR,make,grade,TOPICS};
+
+</script>
+
+</body>
+</html>
