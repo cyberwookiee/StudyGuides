@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}</style>
+<title>Algebra 2 Unit 2 Quiz</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600;700&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout: one graph-paper column of numbered question cards, sticky progress bar, results panel on submit */
+:root{
+  --bg:#eef2f6; --paper:#ffffff; --ink:#16202c; --muted:#596678; --line:#d5dde7;
+  --grid:rgba(31,95,191,.09); --accent:#1f5fbf; --accent-ink:#ffffff; --accent-soft:#e2ebf9; --c2:#c2410c;
+  --ok:#17733f; --ok-soft:#e1f2e8; --bad:#b42318; --bad-soft:#fbe8e5; --skip:#8a5a00; --skip-soft:#fbf1dc;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-math:"STIX Two Text", "Cambria Math", "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f141b; --paper:#161d27; --ink:#e5eaf1; --muted:#99a5b5; --line:#2a3443;
+  --grid:rgba(122,167,255,.07); --accent:#82abff; --accent-ink:#0f141b; --accent-soft:#1b2944; --c2:#fb923c;
+  --ok:#62cf8f; --ok-soft:#14301f; --bad:#ff8b7b; --bad-soft:#3b1d19; --skip:#e9b85a; --skip-soft:#352a14; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --paper:#161d27; --ink:#e5eaf1; --muted:#99a5b5; --line:#2a3443;
+  --grid:rgba(122,167,255,.07); --accent:#82abff; --accent-ink:#0f141b; --accent-soft:#1b2944; --c2:#fb923c;
+  --ok:#62cf8f; --ok-soft:#14301f; --bad:#ff8b7b; --bad-soft:#3b1d19; --skip:#e9b85a; --skip-soft:#352a14; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.5;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.m{font-family:var(--f-math);font-size:1.08em;white-space:nowrap}
+header{padding-block:40px 24px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(32px,6vw,48px);line-height:1.05;margin:6px 0 12px;text-wrap:balance;letter-spacing:-.01em}
+.intro{color:var(--muted);max-width:60ch;margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--paper);border:1px solid var(--line);color:var(--muted)}
+.name-row{margin-top:20px;display:flex;flex-direction:column;gap:6px;max-width:360px}
+label.small{font-size:14px;font-weight:600;color:var(--muted)}
+input[type=text]{font:inherit;font-size:17px;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:8px;padding:9px 12px;width:100%}
+input[type=text]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-block:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:14px;padding-block:10px}
+.bar .count{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:15px}
+.track{flex:1;height:6px;border-radius:3px;background:var(--line);overflow:hidden;min-width:60px}
+.fill{height:100%;background:var(--accent);width:0;transition:width .25s}
+.clear{font:inherit;font-size:14px;font-weight:700;white-space:nowrap;background:var(--paper);color:var(--bad);border:1.5px solid var(--bad);border-radius:8px;padding:6px 12px;cursor:pointer}
+.clear.armed{background:var(--bad);color:var(--paper)}
+.clear:focus-visible{outline:3px solid var(--bad-soft);outline-offset:2px}
+.saved{font-size:13px;color:var(--muted);white-space:nowrap}
+@media (max-width:480px){.saved{display:none}}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+
+main{padding-block:24px 64px;display:flex;flex-direction:column;gap:14px}
+h2.sec{font-family:var(--f-display);font-weight:600;font-size:21px;margin:22px 0 2px;display:flex;align-items:baseline;gap:10px}
+h2.sec span{font-family:var(--f-body);font-size:14px;color:var(--muted);font-weight:600}
+.q{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.qhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.qnum{font-family:var(--f-display);font-weight:800;font-size:15px;color:var(--accent);font-variant-numeric:tabular-nums}
+.qtype{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.qtext{margin:0;min-width:0}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;cursor:pointer}
+.opt:hover{border-color:var(--accent)}
+.opt input{margin:4px 0 0;accent-color:var(--accent);flex:none}
+.opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.opt:has(input:focus-visible){box-shadow:0 0 0 3px var(--accent-soft)}
+.tf{flex-direction:row}
+.tf .opt{flex:1;justify-content:center;font-weight:700}
+.free{display:flex;gap:8px;align-items:center}
+.free input{flex:1;min-width:0}
+.sym{font:inherit;font-weight:700;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:8px;width:44px;height:44px;cursor:pointer;flex:none}
+.sym:hover{border-color:var(--accent)}
+.hint{font-size:14px;color:var(--muted);margin:-4px 0 0}
+.help-btn{font:inherit;font-weight:800;font-size:17px;width:44px;height:44px;flex:none;border-radius:50%;border:1.5px solid var(--accent);background:var(--paper);color:var(--accent);cursor:pointer}
+.help-btn[aria-expanded="true"]{background:var(--accent);color:var(--accent-ink)}
+.help-btn:focus-visible{outline:3px solid var(--accent-soft);outline-offset:2px}
+.help-box{background:var(--accent-soft);border-radius:9px;padding:12px 14px;font-size:15px;display:flex;flex-direction:column;gap:6px}
+.help-box p{margin:0}
+.help-box .ex{display:flex;flex-wrap:wrap;gap:6px}
+.help-box code,.guide code{font-family:var(--f-math);font-size:1.05em;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:1px 7px;white-space:nowrap}
+.guide{margin-top:18px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:0 16px;max-width:640px}
+.guide summary{cursor:pointer;font-weight:700;padding-block:12px;color:var(--accent)}
+.guide summary:focus-visible{outline:3px solid var(--accent-soft);border-radius:6px}
+.guide dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px 14px;margin:0 0 16px;font-size:15px}
+.guide dt{font-weight:700}
+.guide dd{margin:0;min-width:0}
+@media (max-width:480px){.guide dl{grid-template-columns:minmax(0,1fr)}.guide dd{margin-bottom:6px}}
+.pw{display:inline-flex;align-items:center;gap:4px;vertical-align:middle;font-family:var(--f-math);margin:4px 0}
+.pw .brace{font-size:2.4em;line-height:1;font-weight:400}
+.pw .rows{display:flex;flex-direction:column;gap:2px}
+.pw.three .brace{font-size:3.4em}
+
+.feedback{display:none;border-radius:9px;padding:10px 14px;font-size:15px}
+.done .feedback{display:block}
+.q.right{border-color:var(--ok)}
+.q.wrong{border-color:var(--bad)}
+.q.skip{border-color:var(--skip)}
+.right .feedback{background:var(--ok-soft)}
+.wrong .feedback{background:var(--bad-soft)}
+.skip .feedback{background:var(--skip-soft)}
+.verdict{font-weight:700;display:block;margin-bottom:2px}
+.right .verdict{color:var(--ok)} .wrong .verdict{color:var(--bad)} .skip .verdict{color:var(--skip)}
+.feedback p{margin:4px 0 0}
+.done .opt{cursor:default}
+.done .opt:hover{border-color:var(--line)}
+.done .opt.is-answer{border-color:var(--ok);background:var(--ok-soft)}
+.done .opt.picked-wrong{border-color:var(--bad);background:var(--bad-soft)}
+.filter-missed .q.right{display:none}
+
+.submit-area{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.btn{font:inherit;font-weight:700;font-size:17px;border-radius:10px;padding:13px 22px;cursor:pointer;border:1.5px solid var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:var(--paper);color:var(--accent)}
+.btn:focus-visible,.sym:focus-visible{outline:3px solid var(--accent-soft);outline-offset:2px}
+.confirm{background:var(--skip-soft);border:1px solid var(--skip);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.confirm .row{display:flex;gap:10px;flex-wrap:wrap}
+
+.results{background:var(--paper);border:2px solid var(--accent);border-radius:14px;padding:22px 20px;display:flex;flex-direction:column;gap:16px}
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:var(--f-display);font-weight:800;font-size:56px;line-height:1;font-variant-numeric:tabular-nums}
+.score .pct{font-size:20px;font-weight:700;color:var(--muted)}
+.tally{display:flex;gap:8px;flex-wrap:wrap}
+.tally .chip.ok{color:var(--ok);border-color:var(--ok)} .tally .chip.no{color:var(--bad);border-color:var(--bad)} .tally .chip.sk{color:var(--skip);border-color:var(--skip)}
+.secs{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 14px;font-size:15px;align-items:center}
+.secs .lab{min-width:0}
+.secs .val{font-variant-numeric:tabular-nums;font-weight:700;text-align:right}
+.mini{grid-column:1/-1;height:5px;border-radius:3px;background:var(--line);overflow:hidden;margin-bottom:6px}
+.mini i{display:block;height:100%;background:var(--ok)}
+.results .row{display:flex;gap:10px;flex-wrap:wrap}
+[hidden]{display:none!important}
+.figure{max-width:100%;overflow-x:auto}
+.graph{display:block;width:100%;max-width:340px;height:auto;background:var(--paper);border:1px solid var(--line);border-radius:8px}
+.graph .g-grid{stroke:var(--line);stroke-width:1}
+.graph .g-axis{stroke:var(--ink);stroke-width:1.4}
+.graph .g-axfill{fill:var(--ink)}
+.graph .g-num{fill:var(--muted);font:600 10px var(--f-body);paint-order:stroke;stroke:var(--paper);stroke-width:3px}
+.graph .g-curve{fill:none;stroke:var(--accent);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.graph .g-cfill{fill:var(--accent)}
+.graph .g-curve2{fill:none;stroke:var(--c2);stroke-width:2.6;stroke-linecap:round}
+.graph .g-cfill2{fill:var(--c2)}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-size:.78em;line-height:1.05;margin:0 1px}.fr sup,.fr sub{font-size:1em;vertical-align:baseline;position:static}.fr sup{border-bottom:1px solid currentColor;padding:0 2px}
+.graph .g-parent{fill:none;stroke:var(--muted);stroke-width:1.6;stroke-dasharray:5 4}
+.graph .g-pt{fill:var(--accent);stroke:var(--paper);stroke-width:1.5}
+.graph .g-open{fill:var(--paper);stroke:var(--accent);stroke-width:2.2}
+.graph .g-lab{fill:var(--ink);font:700 12px var(--f-math);paint-order:stroke;stroke:var(--paper);stroke-width:4px}
+.gopts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.gopts .opt{min-width:0}
+.gopts .opt>span{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
+.gopts .gl{font-family:var(--f-display);font-weight:800;color:var(--accent)}
+.gopts .graph{max-width:100%}
+@media (max-width:480px){ .q{padding:16px} .tf{flex-direction:column} body{font-size:16px} }
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="eyebrow">Algebra 2 · Unit 2</div>
+  <h1>Systems of Equations Practice Quiz</h1>
+  <p class="intro">50 questions on solving 2×2 systems by graphing, substitution and elimination, classifying systems, and solving 3×3 systems. Answer everything, then press Submit at the bottom. You'll see your score and which questions you got right or wrong.</p>
+  <div class="meta" id="meta"></div>
+  <details class="guide" id="guide"><summary>How to type free-response answers</summary>
+    <dl>
+      <dt>One number</dt><dd>Type the number: <code>−5</code> <code>6.5</code> <code>7/2</code>. Leave fractions as fractions instead of rounding. Writing <code>y =</code> in front is optional.</dd>
+      <dt>Ordered pairs and triples</dt><dd>Type the values in order, separated by commas: <code>(5, −4)</code> for (x, y) and <code>(4, 0, −5)</code> for (x, y, z). The parentheses are optional, and <code>x = 5, y = −4</code> also works.</dd>
+    </dl>
+    <p class="hint" style="margin:0 0 14px">Tap the <strong>?</strong> next to any free-response box for help with that question.</p>
+  </details>
+  <div class="name-row"><label class="small" for="student">Your name (optional)</label><input type="text" id="student" autocomplete="name" placeholder="First name"></div>
+</header>
+
+<div class="bar"><div class="wrap"><span class="count" id="count">0 of 50 answered</span><div class="track"><div class="fill" id="fill"></div></div><span class="saved" id="saved">Saved on this device</span><button type="button" class="clear" id="clearBtn">Clear all answers</button></div></div>
+
+<main class="wrap" id="main"></main>
+
+<script>
+// ---------- graph drawing ----------
+// G({x:[min,max], y:[min,max], u:px per unit, step:tick label spacing, small, alt,
+//    c:[{f | pl:[[x,y]...] | g:t=>[x,y], a, b, arr:[startArrow,endArrow], parent}], p:[{x,y,open,l,dx,dy}]})
+const fmt=n=>n<0?'−'+(-n):String(n);
+function G(o){
+  const [x0,x1]=o.x||[-6,6],[y0,y1]=o.y||[-6,6],sm=!!o.small,u=o.u||(sm?16:22),pad=sm?8:20,step=o.step||2;
+  const W=(x1-x0)*u+2*pad,H=(y1-y0)*u+2*pad,X=x=>(pad+(x-x0)*u).toFixed(1),Y=y=>(pad+(y1-y)*u).toFixed(1);
+  let s=`<svg class="graph" viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.alt||'Coordinate graph'}">`;
+  for(let i=Math.ceil(x0);i<=x1;i++)s+=`<line class="g-grid" x1="${X(i)}" y1="${Y(y1)}" x2="${X(i)}" y2="${Y(y0)}"/>`;
+  for(let j=Math.ceil(y0);j<=y1;j++)s+=`<line class="g-grid" x1="${X(x0)}" y1="${Y(j)}" x2="${X(x1)}" y2="${Y(j)}"/>`;
+  const head=(px,py,dx,dy,cls,sz)=>{const L=Math.hypot(dx,dy)||1;dx/=L;dy/=L;const bx=px-dx*sz,by=py-dy*sz,nx=-dy*sz*.55,ny=dx*sz*.55;return `<polygon class="${cls}" points="${px.toFixed(1)},${py.toFixed(1)} ${(bx+nx).toFixed(1)},${(by+ny).toFixed(1)} ${(bx-nx).toFixed(1)},${(by-ny).toFixed(1)}"/>`;};
+  if(y0<=0&&y1>=0){s+=`<line class="g-axis" x1="${X(x0)}" y1="${Y(0)}" x2="${X(x1)}" y2="${Y(0)}"/>`+head(+X(x1)+4,+Y(0),1,0,'g-axfill',7)+head(+X(x0)-4,+Y(0),-1,0,'g-axfill',7);}
+  if(x0<=0&&x1>=0){s+=`<line class="g-axis" x1="${X(0)}" y1="${Y(y0)}" x2="${X(0)}" y2="${Y(y1)}"/>`+head(+X(0),+Y(y1)-4,0,-1,'g-axfill',7)+head(+X(0),+Y(y0)+4,0,1,'g-axfill',7);}
+  if(!sm){
+    for(let i=Math.ceil(x0/step)*step;i<=x1;i+=step)if(i!==0&&i!==x0&&i!==x1)s+=`<text class="g-num" x="${X(i)}" y="${+Y(0)+13}" text-anchor="middle">${fmt(i)}</text>`;
+    for(let j=Math.ceil(y0/step)*step;j<=y1;j+=step)if(j!==0&&j!==y0&&j!==y1)s+=`<text class="g-num" x="${+X(0)-5}" y="${+Y(j)+3.5}" text-anchor="end">${fmt(j)}</text>`;
+  }
+  (o.c||[]).forEach(c=>{
+    let pts;
+    if(c.pl)pts=c.pl;
+    else{const g=c.g||(t=>[t,c.f(t)]),a=c.a??x0,b=c.b??x1;pts=[];for(let k=0;k<=160;k++){const t=a+(b-a)*k/160;pts.push(g(t));}}
+    const sp=pts.map(([x,y])=>[+X(x),+Y(y)]);
+    s+=`<path class="${c.parent?'g-parent':(c.two?'g-curve2':'g-curve')}" d="M${sp.map(p=>p.join(',')).join(' L')}"/>`;
+    if(!c.parent){const arr=c.arr||[true,true],n=sp.length;
+      if(arr[0])s+=head(sp[0][0],sp[0][1],sp[0][0]-sp[1][0],sp[0][1]-sp[1][1],c.two?'g-cfill2':'g-cfill',sm?8:10);
+      if(arr[1])s+=head(sp[n-1][0],sp[n-1][1],sp[n-1][0]-sp[n-2][0],sp[n-1][1]-sp[n-2][1],c.two?'g-cfill2':'g-cfill',sm?8:10);}
+  });
+  (o.p||[]).forEach(p=>{
+    s+=`<circle class="${p.open?'g-open':'g-pt'}" cx="${X(p.x)}" cy="${Y(p.y)}" r="${sm?3.6:4.4}"/>`;
+    if(p.l)s+=`<text class="g-lab" x="${+X(p.x)+(p.dx??7)}" y="${+Y(p.y)+(p.dy??-8)}" text-anchor="${p.anchor||'start'}">${p.l}</text>`;
+  });
+  return s+'</svg>';
+}
+const P=(rows)=>`<span class="pw${rows.length>2?' three':''}"><span class="brace">{</span><span class="rows">${rows.map(r=>`<span>${r}</span>`).join('')}</span></span>`;
+const M=s=>`<span class="m">${s}</span>`;
+const SECTIONS=["Solving by graphing","Solving by substitution","Solving by elimination","Classifying systems","Systems of three equations"];
+
+// ---------- equation display ----------
+// e: ['s',a,b,c] ax+by=c · ['y',m,b] y=mx+b · ['x',m,b] x=my+b · ['s3',a,b,c,d] ax+by+cz=d · a coefficient may be a fraction [n,d]
+const fr=(n,d)=>`<span class="fr"><sup>${n}</sup><sub>${d}</sub></span>`;
+const cv=c=>Array.isArray(c)?c[0]/c[1]:c;
+function term(c,v,first){const n=cv(c);if(n===0)return '';const neg=n<0;
+  const body=(Array.isArray(c)?fr(Math.abs(c[0]),c[1]):(Math.abs(n)===1&&v?'':String(Math.abs(n))))+v;
+  return first?(neg?'−':'')+body:(neg?' − ':' + ')+body;}
+function terms(list){let out='',first=true;for(const [c,v] of list){const t=term(c,v,first);if(t){out+=t;first=false;}}return out||'0';}
+function EQ(e){
+  if(e[0]==='s')return terms([[e[1],'x'],[e[2],'y']])+' = '+terms([[e[3],'']]);
+  if(e[0]==='s3')return terms([[e[1],'x'],[e[2],'y'],[e[3],'z']])+' = '+terms([[e[4],'']]);
+  if(e[0]==='y')return 'y = '+terms([[e[1],'x'],[e[2],'']]);
+  if(e[0]==='x')return 'x = '+terms([[e[1],'y'],[e[2],'']]);}
+const SYS=es=>P(es.map(EQ));
+// graph of y-form lines: first line blue, second orange
+const GS=(es,o)=>G(Object.assign({x:[-6,6],y:[-6,6],step:2},o,{c:es.map((e,k)=>({f:x=>cv(e[1])*x+e[2],two:k===1}))}));
+const CL=["Consistent and independent","Consistent and dependent","Inconsistent"];
+
+const Q=[
+// 0 Solving by graphing
+{s:0,t:"mc",e:[['y',2,-1],['y',-1,5]],q:"The graphs of this system are shown. What is the solution? {S}",g:GS([['y',2,-1],['y',-1,5]],{x:[-3,6],y:[-3,7],step:1,alt:"Two lines crossing at one point"}),o:[M("(2, 3)"),M("(3, 2)"),M("(0, −1)"),M("(0, 5)")],a:0,ex:"The lines cross at (2, 3). Check: 2(2) − 1 = 3 and −2 + 5 = 3. (0, −1) and (0, 5) are just the y-intercepts, and (3, 2) has x and y switched."},
+{s:0,t:"pt",e:[['y',1,1],['y',-2,4]],q:"Use the graph to solve the system. {S}",g:GS([['y',1,1],['y',-2,4]],{x:[-4,4],y:[-3,6],step:1,alt:"Two lines crossing at one point"}),a:[1,2],ans:"(1, 2)",ex:"The lines cross at x = 1, y = 2. Check: 1 + 1 = 2 and −2(1) + 4 = 2."},
+{s:0,t:"pt",e:[['y',-1,-2],['y',[1,2],1]],q:"Use the graph to solve the system. {S}",g:GS([['y',-1,-2],['y',[1,2],1]],{x:[-6,4],y:[-4,4],step:1,alt:"Two lines crossing on the x-axis"}),a:[-2,0],ans:"(−2, 0)",ex:"The lines cross on the x-axis at (−2, 0). Check: −(−2) − 2 = 0 and ½(−2) + 1 = 0."},
+{s:0,t:"mc",go:true,e:[['y',1,-3],['y',-1,1]],q:"Which graph shows the system {S} and its solution?",o:[
+  GS([['y',1,3],['y',-1,1]],{x:[-5,5],y:[-5,5],small:true,alt:"Graph A: lines crossing at (−1, 2)"}),
+  GS([['y',1,-3],['y',1,1]],{x:[-5,5],y:[-5,5],small:true,alt:"Graph B: two parallel lines"}),
+  GS([['y',1,-3],['y',-1,1]],{x:[-5,5],y:[-5,5],small:true,alt:"Graph C: lines crossing at (2, −1)"}),
+  GS([['y',-1,-3],['y',1,1]],{x:[-5,5],y:[-5,5],small:true,alt:"Graph D: lines crossing at (−2, −1)"})],a:2,ex:"Graph C has a line with slope 1 through (0, −3) and a line with slope −1 through (0, 1). They cross at (2, −1). Graph B uses the wrong slope for the second line, so the lines never meet."},
+{s:0,t:"tf",q:"The solution of a system of two linear equations is the point where their graphs intersect.",a:true,ex:"That point lies on both lines, so its x and y make both equations true at the same time."},
+{s:0,t:"tf",q:"To check a solution you read from a graph, you only need to substitute it into one of the equations.",a:false,ex:"A solution has to make both equations true. Points on just one line satisfy only that line's equation, so always check both."},
+{s:0,t:"tf",q:"Solving by graphing always gives an exact answer.",a:false,ex:"If the lines cross between grid lines, like at (1.4, 2.7), you can only estimate. Substitution and elimination give exact answers."},
+{s:0,t:"mc",e:[['s',3,2,4],['s',1,-1,3]],q:`Is ${M("(2, −1)")} a solution of {S}`,o:["Yes, it makes both equations true","No, it only works in the first equation","No, it only works in the second equation","No, it works in neither equation"],a:0,ex:"First: 3(2) + 2(−1) = 6 − 2 = 4 ✓. Second: 2 − (−1) = 3 ✓. It works in both, so it is the solution."},
+{s:0,t:"mc",e:[['y',-2,2],['s',2,1,6]],q:`Is ${M("(−1, 4)")} a solution of {S}`,o:["Yes, it makes both equations true","No, it only works in the first equation","No, it only works in the second equation","No, it works in neither equation"],a:1,ex:"First: −2(−1) + 2 = 4 ✓. Second: 2(−1) + 4 = 2, not 6 ✗. It's on the first line only, so it is not a solution."},
+{s:0,t:"pt",e:[['y',[-2,3],1],['y',[1,3],-2]],q:"Use the graph to solve the system. {S}",g:GS([['y',[-2,3],1],['y',[1,3],-2]],{x:[-3,6],y:[-4,4],step:1,alt:"Two lines crossing at one point"}),a:[3,-1],ans:"(3, −1)",ex:"The lines cross at (3, −1). Check: −⅔(3) + 1 = −1 and ⅓(3) − 2 = −1."},
+
+// 1 Solving by substitution
+{s:1,t:"mc",e:[['s',3,1,7],['s',4,-5,3]],q:"You want to solve {S} by substitution. Which is the easiest first step?",o:[`Solve the first equation for ${M("y")}`,`Solve the first equation for ${M("x")}`,`Solve the second equation for ${M("x")}`,`Solve the second equation for ${M("y")}`],a:0,ex:"y has a coefficient of 1 in the first equation, so y = 7 − 3x with no fractions. Any other choice means dividing and working with fractions."},
+{s:1,t:"pt",e:[['y',2,-3],['s',3,1,12]],q:"Solve by substitution. {S}",a:[3,3],ans:"(3, 3)",ex:"3x + (2x − 3) = 12, so 5x = 15 and x = 3. Then y = 2(3) − 3 = 3."},
+{s:1,t:"mc",q:`You substitute ${M("y = 2x + 1")} into ${M("3x − 4y = 6")}. Which equation do you get?`,o:[M("3x − 4(2x + 1) = 6"),M("3x − 8x + 1 = 6"),M("3(2x + 1) − 4y = 6"),M("3x − 4(2x) + 1 = 6")],a:0,ex:"Replace y with the whole expression in parentheses: 3x − 4(2x + 1) = 6. Then distribute the −4 to both terms: 3x − 8x − 4 = 6. Forgetting to distribute to the +1 is the common mistake."},
+{s:1,t:"pt",e:[['x',4,1],['s',2,-5,8]],q:"Solve by substitution. {S}",a:[9,2],ans:"(9, 2)",ex:"2(4y + 1) − 5y = 8, so 8y + 2 − 5y = 8, 3y = 6, y = 2. Then x = 4(2) + 1 = 9."},
+{s:1,t:"pt",e:[['y',-1,6],['s',2,-3,2]],q:"Solve by substitution. {S}",a:[4,2],ans:"(4, 2)",ex:"2x − 3(−x + 6) = 2, so 2x + 3x − 18 = 2, 5x = 20, x = 4. Then y = −4 + 6 = 2. Watch the sign: −3 times −x is +3x."},
+{s:1,t:"pt",e:[['y',3,2],['s',5,-2,-1]],q:"Solve by substitution. {S}",a:[-3,-7],ans:"(−3, −7)",ex:"5x − 2(3x + 2) = −1, so 5x − 6x − 4 = −1, −x = 3, x = −3. Then y = 3(−3) + 2 = −7."},
+{s:1,t:"pt",e:[['s',1,2,7],['s',3,-1,-7]],q:"Solve by substitution. {S}",a:[-1,4],ans:"(−1, 4)",ex:"From the first equation, x = 7 − 2y. Then 3(7 − 2y) − y = −7, so 21 − 7y = −7, y = 4. Then x = 7 − 2(4) = −1."},
+{s:1,t:"pt",e:[['y',4,-1],['s',2,3,4]],q:"Solve by substitution. {S}",a:[0.5,1],ans:"(1/2, 1)",ex:"2x + 3(4x − 1) = 4, so 14x − 3 = 4, 14x = 7, x = 1/2. Then y = 4(1/2) − 1 = 1. Fractions are fine as answers."},
+{s:1,t:"tf",q:`While solving a system by substitution, the variables cancel and you get ${M("5 = 5")}. This means the system has no solution.`,a:false,ex:"A true statement like 5 = 5 means every point on the line works, so there are infinitely many solutions. A false statement like 0 = 3 is what means no solution."},
+{s:1,t:"mc",e:[['y',2,5],['s',4,-2,3]],q:"What happens when you solve {S} by substitution?",o:[`You get ${M("−10 = 3")}, so there is no solution`,`You get ${M("0 = 0")}, so there are infinitely many solutions`,`You get ${M("x = 13/8")}`,`You get ${M("x = −10/3")}`],a:0,ex:"4x − 2(2x + 5) = 3 becomes 4x − 4x − 10 = 3, so −10 = 3. That's false, so no point works. The lines are parallel (both have slope 2)."},
+
+// 2 Solving by elimination
+{s:2,t:"pt",e:[['s',1,1,9],['s',1,-1,3]],q:"Solve by elimination. {S}",a:[6,3],ans:"(6, 3)",ex:"Add the equations: 2x = 12, so x = 6. Then 6 + y = 9, so y = 3."},
+{s:2,t:"pt",e:[['s',3,2,4],['s',5,-2,12]],q:"Solve by elimination. {S}",a:[2,-1],ans:"(2, −1)",ex:"The y terms are opposites, so add: 8x = 16, x = 2. Then 3(2) + 2y = 4, 2y = −2, y = −1."},
+{s:2,t:"tf",q:`Adding ${M("2x + y = 5")} and ${M("2x − y = 1")} eliminates ${M("x")}.`,a:false,ex:"Adding gives 4x = 6, which eliminates y, not x. To eliminate x here you subtract, because the x terms are the same, not opposites."},
+{s:2,t:"mc",e:[['s',2,3,5],['s',4,-1,3]],q:`To eliminate ${M("y")} in {S} what should you multiply the second equation by before adding?`,o:[M("3"),M("−3"),M("2"),M("−2")],a:0,ex:"Multiplying by 3 makes −3y, the opposite of +3y in the first equation, so adding cancels y. Multiplying by −3 makes +3y, which adds up to 6y instead."},
+{s:2,t:"pt",e:[['s',2,3,5],['s',4,-1,3]],q:"Solve by elimination. {S}",a:[1,1],ans:"(1, 1)",ex:"Multiply the second equation by 3: 12x − 3y = 9. Add to the first: 14x = 14, x = 1. Then 4(1) − y = 3, so y = 1."},
+{s:2,t:"tf",q:"In elimination, you can multiply an equation by any nonzero number without changing the system's solution.",a:true,ex:"Multiplying both sides by the same nonzero number gives an equivalent equation with the same line, so the solution doesn't change."},
+{s:2,t:"pt",e:[['s',4,3,-2],['s',3,-2,7]],q:"Solve by elimination. {S}",a:[1,-2],ans:"(1, −2)",ex:"Multiply the first by 2 and the second by 3: 8x + 6y = −4 and 9x − 6y = 21. Add: 17x = 17, x = 1. Then 4 + 3y = −2, y = −2."},
+{s:2,t:"mc",e:[['s',3,4,10],['s',2,-5,-1]],q:`Which steps eliminate ${M("x")} from {S}`,o:["Multiply the first by 2 and the second by −3, then add","Multiply the first by 2 and the second by 3, then add","Multiply the first by 5 and the second by 4, then add","Multiply the first by 3 and the second by 2, then add"],a:0,ex:"That gives 6x and −6x, which cancel. With 2 and 3 you'd get 6x + 6x = 12x. Using 5 and 4 eliminates y instead."},
+{s:2,t:"pt",e:[['s',3,4,10],['s',2,-5,-1]],q:"Solve by elimination. {S}",a:[2,1],ans:"(2, 1)",ex:"6x + 8y = 20 and −6x + 15y = 3. Add: 23y = 23, y = 1. Then 3x + 4 = 10, x = 2."},
+{s:2,t:"pt",e:[['s',5,-3,-11],['s',2,3,4]],q:"Solve by elimination. {S}",a:[-1,2],ans:"(−1, 2)",ex:"Add: 7x = −7, x = −1. Then 2(−1) + 3y = 4, 3y = 6, y = 2."},
+{s:2,t:"num",e:[['s',6,5,7],['s',4,3,5]],q:`Solve {S} by elimination. What is ${M("y")}?`,a:-1,ans:"−1",ex:"Multiply by 2 and 3: 12x + 10y = 14 and 12x + 9y = 15. Subtract: y = −1. (Then 6x − 5 = 7, so x = 2.)"},
+
+// 3 Classifying systems
+{s:3,t:"mc",q:"A system with exactly one solution is called:",o:CL.concat(["Inconsistent and independent"]),a:0,ex:"Consistent means it has at least one solution. Independent means the lines are different, so they cross at exactly one point."},
+{s:3,t:"mc",q:"A system whose graphs are two parallel lines is called:",o:CL.concat(["Inconsistent and dependent"]),a:2,ex:"Parallel lines never meet, so there is no solution. A system with no solution is inconsistent."},
+{s:3,t:"mc",q:"A system whose two equations graph as the same line is called:",o:CL.concat(["Inconsistent and dependent"]),a:1,ex:"Every point on the line solves both equations, so there are infinitely many solutions. That is consistent and dependent."},
+{s:3,t:"mc",q:"How many solutions does a consistent and dependent system have?",o:["None","Exactly one","Exactly two","Infinitely many"],a:3,ex:"Dependent means the equations describe the same line, so every point on it is a solution."},
+{s:3,t:"mc",e:[['y',2,1],['y',2,-3]],k:2,q:"Classify the system shown. {S}",g:GS([['y',2,1],['y',2,-3]],{x:[-4,4],y:[-6,6],step:2,alt:"Two parallel lines"}),o:CL,a:2,ex:"Both lines have slope 2 but different y-intercepts (1 and −3), so they're parallel and never meet. No solution means inconsistent."},
+{s:3,t:"mc",e:[['y',[1,2],1],['y',-2,6]],k:0,q:"Classify the system shown. {S}",g:GS([['y',[1,2],1],['y',-2,6]],{x:[-3,5],y:[-2,6],step:1,alt:"Two lines crossing at one point"}),o:CL,a:0,ex:"The slopes are different (½ and −2), so the lines cross once, at (2, 2). One solution means consistent and independent."},
+{s:3,t:"mc",e:[['y',3,-2],['s',6,-2,4]],k:1,q:"Classify the system. {S}",o:CL,a:1,ex:"Substitute: 6x − 2(3x − 2) = 4 gives 6x − 6x + 4 = 4, so 4 = 4. Always true, so it's the same line: consistent and dependent."},
+{s:3,t:"mc",e:[['s',2,3,6],['s',4,6,9]],k:2,q:"Classify the system. {S}",o:CL,a:2,ex:"Double the first equation: 4x + 6y = 12. The second says 4x + 6y = 9. The same left side can't equal both 12 and 9, so there's no solution: inconsistent."},
+{s:3,t:"mc",e:[['y',-1,4],['y',1,4]],k:0,q:"Classify the system. {S}",o:CL,a:0,ex:"Same y-intercept doesn't mean same line. The slopes (−1 and 1) are different, so the lines cross once, at (0, 4): consistent and independent."},
+{s:3,t:"mc",e:[['s',1,-2,4],['s',-3,6,-12]],k:1,q:"Classify the system. {S}",o:CL,a:1,ex:"Multiply the first equation by −3: −3x + 6y = −12, which is exactly the second equation. Same line, so consistent and dependent."},
+{s:3,t:"tf",q:"Two lines with the same slope always form an inconsistent system.",a:false,ex:"Same slope with different y-intercepts is inconsistent, but same slope and same y-intercept is the same line, which is consistent and dependent."},
+{s:3,t:"tf",q:"If two lines have different slopes, the system is consistent and independent.",a:true,ex:"Lines with different slopes must cross, and they cross exactly once, so there is exactly one solution."},
+{s:3,t:"tf",q:"An inconsistent system can have exactly one solution.",a:false,ex:"Inconsistent means no solution at all. A system with exactly one solution is consistent and independent."},
+{s:3,t:"num",q:`For what value of ${M("k")} does the system ${P(["y = 4x + 1","y = kx − 3"])} have <strong>no</strong> solution?`,a:4,ans:"4",ex:"No solution means parallel lines: same slope, different y-intercepts. The intercepts (1 and −3) already differ, so the slopes must match: k = 4."},
+
+// 4 Systems of three equations
+{s:4,t:"tf",q:"To solve a system of three equations in three variables, you can eliminate the same variable from two different pairs of equations, then solve the 2×2 system that's left.",a:true,ex:"That's the standard method. Eliminating the same variable twice leaves two equations in the same two variables."},
+{s:4,t:"mc",e:[['s3',1,1,1,6],['s3',2,-1,1,3],['s3',1,2,-1,2]],q:"In the system {S} you add the first two equations. Which equation do you get?",o:[M("3x + 2z = 9"),M("3x + 2y + 2z = 9"),M("−x + 2y = 3"),M("3x + z = 9")],a:0,ex:"(x + 2x) + (y − y) + (z + z) = 6 + 3, so 3x + 2z = 9. The y terms cancel. Subtracting instead would give −x + 2y = 3."},
+{s:4,t:"pt",e:[['s3',1,1,1,6],['s3',2,-1,1,3],['s3',1,2,-1,2]],q:"Solve the system. {S}",a:[1,2,3],ans:"(1, 2, 3)",ex:"Add equations 1 and 2: 3x + 2z = 9. Add 2 times equation 2 to equation 3: 5x + z = 8. Solve those: z = 8 − 5x, 3x + 16 − 10x = 9, x = 1, z = 3. Then 1 + y + 3 = 6, y = 2."},
+{s:4,t:"pt",e:[['s3',1,1,1,2],['s3',1,-1,2,6],['s3',2,1,-1,-1]],q:"Solve the system. {S}",a:[1,-1,2],ans:"(1, −1, 2)",ex:"Add equations 1 and 2: 2x + 3z = 8. Add equations 2 and 3: 3x + z = 5. Then z = 5 − 3x, so 2x + 15 − 9x = 8, x = 1, z = 2. Then 1 + y + 2 = 2, y = −1."},
+{s:4,t:"pt",e:[['s3',2,1,-1,-1],['s3',1,-2,3,-1],['s3',3,1,2,4]],q:"Solve the system. {S}",a:[-1,3,2],ans:"(−1, 3, 2)",ex:"Eliminate y. Twice equation 1 plus equation 2: 5x + z = −3. Equation 3 minus equation 1: x + 3z = 5. Then z = −3 − 5x, so x − 9 − 15x = 5, x = −1, z = 2. Then −2 + y − 2 = −1, y = 3."}
+];
+Q.forEach(q=>{if(q.e)q.q=q.q.replace('{S}',SYS(q.e));});
+
+const TYPE_LABEL={mc:"Multiple choice",tf:"True / false",num:"Free response",pt:"Free response"};
+const HINTS={num:"Type one number. Fractions like 7/2 are fine.",pt:"Type the ordered pair, like (5, −4).",pt3:"Type the ordered triple (x, y, z), like (4, 0, −5)."};
+const PH={num:"e.g. 7/2",pt:"e.g. (5, −4)",pt3:"e.g. (4, 0, −5)"};
+const HELP={
+ num:`<p><strong>Type a single number.</strong> Negatives can use − or -. If the decimal repeats, type the fraction instead: <code>1/3</code>, not 0.33.</p><div class="ex"><code>−5</code><code>6.5</code><code>7/2</code><code>y = 8</code></div>`,
+ pt:`<p><strong>Type x, then y, separated by a comma.</strong> Parentheses are optional. Fractions are fine. You can also label them, like <code>x = 5, y = −4</code>.</p><div class="ex"><code>(5, −4)</code><code>5, −4</code><code>(3/2, 0)</code></div>`,
+ pt3:`<p><strong>Type x, then y, then z, separated by commas.</strong> Parentheses are optional. You can also label them, like <code>x = 4, y = 0, z = −5</code>.</p><div class="ex"><code>(4, 0, −5)</code><code>4, 0, −5</code></div>`
+};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+const hk=q=>q.t==='pt'&&q.a.length===3?'pt3':q.t;
+const main=document.getElementById('main');
+let html='',cur=-1;
+Q.forEach((q,i)=>{
+  if(q.s!==cur){cur=q.s;const n=Q.filter(x=>x.s===cur).length;html+=`<h2 class="sec">${SECTIONS[cur]} <span>${n} question${n>1?'s':''}</span></h2>`;}
+  let body='';
+  if(q.t==='mc') body=`<div class="opts${q.go?' gopts':''}">${q.o.map((o,j)=>`<label class="opt" data-j="${j}"><input type="radio" name="q${i}" id="q${i}_${j}" value="${j}"><span>${q.go?`<b class="gl">Graph ${'ABCD'[j]}</b>`:''}${o}</span></label>`).join('')}</div>`;
+  else if(q.t==='tf') body=`<div class="opts tf">${['True','False'].map((o,j)=>`<label class="opt" data-j="${j}"><input type="radio" name="q${i}" id="q${i}_${j}" value="${j}"><span>${o}</span></label>`).join('')}</div>`;
+  else body=`<div class="free"><input type="text" id="q${i}" name="q${i}" placeholder="${PH[hk(q)]}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Answer for question ${i+1}"><button type="button" class="help-btn" data-help="${i}" aria-expanded="false" aria-controls="help${i}" title="How to type this answer" aria-label="How to type this answer">?</button></div><p class="hint">${HINTS[hk(q)]}</p><div class="help-box" id="help${i}" hidden>${HELP[hk(q)]}</div>`;
+  html+=`<section class="q" id="card${i}"><div class="qhead"><span class="qnum">Question ${i+1}</span><span class="qtype">${TYPE_LABEL[q.t]}</span></div><div class="qtext">${q.q}</div>${q.g?`<div class="figure">${q.g}</div>`:''}${body}<div class="feedback" id="fb${i}"></div></section>`;
+});
+html+=`<div class="submit-area" id="submitArea"><div class="confirm" id="confirm" hidden><span id="confirmText"></span><div class="row"><button class="btn primary" id="submitAnyway" type="button">Submit anyway</button><button class="btn ghost" id="keepGoing" type="button">Keep working</button></div></div><button class="btn primary" id="submitBtn" type="button">Submit all answers</button></div>`;
+main.innerHTML=html;
+{const c={mc:0,tf:0,fr:0,g:0};Q.forEach(q=>{if(q.t==='mc')c.mc++;else if(q.t==='tf')c.tf++;else c.fr++;if(q.g||q.go)c.g++;});
+ document.getElementById('meta').innerHTML=`<span class="chip">${c.mc} multiple choice</span><span class="chip">${c.tf} true / false</span><span class="chip">${c.fr} free response</span><span class="chip">${c.g} with graphs</span>`;}
+
+// ---------- state ----------
+const KEY='studyguides-math-algebra-2-unit-2-quiz-1-v1';
+let submitted=false;
+function getAns(i){const q=Q[i];if(q.t==='mc'||q.t==='tf'){const r=document.querySelector(`input[name=q${i}]:checked`);return r?r.value:'';}return document.getElementById('q'+i).value.trim();}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({name:document.getElementById('student').value,a:Q.map((_,i)=>getAns(i)),submitted}));}catch(e){}}
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(!d)return;submitted=!!d.submitted;document.getElementById('student').value=d.name||'';d.a.forEach((v,i)=>{if(!v)return;const q=Q[i];if(q.t==='mc'||q.t==='tf'){const r=document.getElementById(`q${i}_${v}`);if(r)r.checked=true;}else document.getElementById('q'+i).value=v;});}catch(e){}}
+function answered(){return Q.reduce((n,_,i)=>n+(getAns(i)?1:0),0);}
+function updateCount(){const n=answered();document.getElementById('count').textContent=`${n} of ${Q.length} answered`;document.getElementById('fill').style.width=(n/Q.length*100)+'%';}
+
+main.addEventListener('input',()=>{updateCount();save();document.getElementById('confirm').hidden=true;});
+main.addEventListener('change',()=>{updateCount();save();});
+document.getElementById('student').addEventListener('input',save);
+main.addEventListener('click',e=>{const h=e.target.closest('.help-btn');if(!h)return;const box=document.getElementById('help'+h.dataset.help);box.hidden=!box.hidden;h.setAttribute('aria-expanded',String(!box.hidden));});
+main.addEventListener('click',e=>{const b=e.target.closest('.sym');if(!b)return;const inp=document.getElementById(b.dataset.for);if(inp.disabled)return;const s=inp.selectionStart??inp.value.length,t=inp.selectionEnd??inp.value.length;inp.value=inp.value.slice(0,s)+b.dataset.ins+inp.value.slice(t);inp.focus();inp.setSelectionRange(s+1,s+1);updateCount();save();});
+
+// ---------- grading ----------
+const clean=s=>s.toLowerCase().replace(/\s+/g,'').replace(/[−–—]/g,'-');
+function parseNum(s){s=clean(s).replace(/^[a-z]=/,'');let m;if((m=s.match(/^(-?\d*\.?\d+)\/(-?\d*\.?\d+)$/)))return parseFloat(m[1])/parseFloat(m[2]);if(/^-?(\d+\.?\d*|\.\d+)$/.test(s))return parseFloat(s);return NaN;}
+const close=(a,b)=>Math.abs(a-b)<1e-6;
+function gradeNums(s,ans){const parts=clean(s).replace(/[a-z]=/g,'').replace(/or|and/g,',').split(/[,;]/).filter(Boolean);const v=parts.map(parseNum);if(!v.length||v.some(isNaN)||v.length!==ans.length)return false;const a=[...ans].sort((x,y)=>x-y);v.sort((x,y)=>x-y);return v.every((x,k)=>close(x,a[k]));}
+const normInt=s=>clean(s).replace(/infinity|inf|oo/g,'∞').replace(/\+∞/g,'∞').replace(/≥/g,'>=').replace(/≤/g,'<=').replace(/∪/g,'u');
+function gradeExpr(s,f){
+  s=clean(s).replace(/²/g,'^2').replace(/^(y|[a-z]\(x\))=/,'');
+  for(let k=0;k<4&&/\|/.test(s);k++)s=s.replace(/\|([^|]+)\|/,'A($1)');
+  if(/\|/.test(s)||!/^[0-9x+\-*/().^A]+$/.test(s))return false;
+  s=s.replace(/(\d|\)|x)(?=[(xA])/g,'$1*').replace(/\)(?=[\d.])/g,')*').replace(/x(?=[\d.])/g,'x*').replace(/(^|[(+\-*/])-(?=[(xA])/g,'$1-1*').replace(/\^/g,'**');
+  let g;try{g=new Function('x','A','"use strict";return ('+s+');');}catch(e){return false;}
+  try{return [-3.7,-1.2,0.3,2.9,5.1,7.4].every(x=>{const u=g(x,Math.abs),v=f(x);return Number.isFinite(u)&&Math.abs(u-v)<1e-6*Math.max(1,Math.abs(v));});}catch(e){return false;}
+}
+function gradePt(s,ans){const parts=clean(s).replace(/^[(\[]/,'').replace(/[)\]]$/,'').split(/[,;]/).filter(Boolean);if(parts.length!==ans.length)return false;
+  let v;if(parts.every(p=>/^[xyz]=/.test(p))){v=[];const ix={x:0,y:1,z:2};for(const p of parts){const k=ix[p[0]];if(k>=ans.length||v[k]!==undefined)return false;v[k]=parseNum(p.slice(2));}}
+  else{if(parts.some(p=>/^[a-z]=/.test(p)))return false;v=parts.map(parseNum);}
+  return v.every((x,k)=>!isNaN(x)&&close(x,ans[k]));}
+function grade(i){const q=Q[i],v=getAns(i);if(!v)return 'skip';let ok=false;
+  if(q.t==='mc')ok=+v===q.a;else if(q.t==='tf')ok=(v==='0')===q.a;else if(q.t==='num'){const n=parseNum(v);ok=!isNaN(n)&&close(n,q.a);}
+  else if(q.t==='nums')ok=gradeNums(v,q.a);else if(q.t==='interval')ok=q.acc.map(normInt).includes(normInt(v));else if(q.t==='expr')ok=gradeExpr(v,q.f);else if(q.t==='pt')ok=gradePt(v,q.a);
+  return ok?'right':'wrong';}
+function correctText(q){if(q.t==='mc')return q.go?`Graph ${'ABCD'[q.a]} (highlighted in green above)`:q.o[q.a];if(q.t==='tf')return q.a?'True':'False';return M(esc(q.ans));}
+function yourText(q,i){const v=getAns(i);if(!v)return '';if(q.t==='mc')return q.o[+v];if(q.t==='tf')return v==='0'?'True':'False';return `<span class="m">${esc(v)}</span>`;}
+
+function submit(restoring){
+  if(document.getElementById('results'))return;
+  submitted=true;save();
+  const res=Q.map((_,i)=>grade(i));
+  document.querySelectorAll('#main input').forEach(el=>el.disabled=true);
+  document.querySelectorAll('.sym').forEach(el=>el.disabled=true);
+  Q.forEach((q,i)=>{const card=document.getElementById('card'+i),r=res[i];card.classList.add('done',r);
+    if(q.t==='mc'||q.t==='tf'){const ca=q.t==='mc'?q.a:(q.a?0:1),v=getAns(i);card.querySelectorAll('.opt').forEach(o=>{const j=+o.dataset.j;if(j===ca)o.classList.add('is-answer');else if(String(j)===v)o.classList.add('picked-wrong');});}
+    const verdict=r==='right'?'Correct':r==='wrong'?'Incorrect':'Not answered';
+    let fb=`<span class="verdict">${verdict}</span>`;
+    if(r==='wrong'&&q.t!=='mc'&&q.t!=='tf')fb+=`<p>Your answer: ${yourText(q,i)}</p>`;
+    if(r!=='right')fb+=`<p>Correct answer: ${correctText(q)}</p>`;
+    fb+=`<p>${q.ex}</p>`;document.getElementById('fb'+i).innerHTML=fb;});
+  const right=res.filter(r=>r==='right').length,wrong=res.filter(r=>r==='wrong').length,skip=res.length-right-wrong;
+  const name=document.getElementById('student').value.trim();
+  let secs='';SECTIONS.forEach((s,k)=>{const idx=Q.map((q,i)=>q.s===k?i:-1).filter(i=>i>=0),c=idx.filter(i=>res[i]==='right').length;secs+=`<span class="lab">${s}</span><span class="val">${c} / ${idx.length}</span><div class="mini"><i style="width:${c/idx.length*100}%"></i></div>`;});
+  const panel=document.createElement('section');panel.className='results';panel.id='results';panel.tabIndex=-1;
+  panel.innerHTML=`<div class="eyebrow">${name?esc(name)+"'s results":"Your results"}</div>
+    <div class="score"><span class="big">${right} / ${Q.length}</span><span class="pct">${Math.round(right/Q.length*100)}%</span></div>
+    <div class="tally"><span class="chip ok">${right} correct</span><span class="chip no">${wrong} incorrect</span>${skip?`<span class="chip sk">${skip} not answered</span>`:''}</div>
+    <div class="secs">${secs}</div>
+    <div class="row"><button class="btn primary" id="missedBtn" type="button">Show only missed questions</button><button class="btn ghost" id="retakeBtn" type="button">Retake quiz</button></div>`;
+  main.prepend(panel);
+  document.getElementById('submitArea').hidden=true;
+  document.getElementById('count').textContent=`Score: ${right} of ${Q.length}`;
+  document.getElementById('missedBtn').addEventListener('click',e=>{const on=main.classList.toggle('filter-missed');e.target.textContent=on?'Show all questions':'Show only missed questions';});
+  document.getElementById('retakeBtn').addEventListener('click',retake);
+  if(restoring===true)return;
+  panel.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});panel.focus({preventScroll:true});
+}
+function retake(){
+  submitted=false;
+  document.getElementById('results')?.remove();main.classList.remove('filter-missed');
+  document.querySelectorAll('#main input').forEach(el=>{el.disabled=false;if(el.type==='radio')el.checked=false;else el.value='';});
+  document.querySelectorAll('.sym').forEach(el=>el.disabled=false);
+  document.querySelectorAll('.q').forEach(c=>{c.classList.remove('done','right','wrong','skip');c.querySelectorAll('.opt').forEach(o=>o.classList.remove('is-answer','picked-wrong'));});
+  document.getElementById('submitArea').hidden=false;document.getElementById('confirm').hidden=true;
+  updateCount();save();window.scrollTo({top:0});
+}
+const clearBtn=document.getElementById('clearBtn');let clearTimer;
+function disarm(){clearBtn.classList.remove('armed');clearBtn.textContent='Clear all answers';clearTimeout(clearTimer);}
+clearBtn.addEventListener('click',()=>{
+  if(!clearBtn.classList.contains('armed')){clearBtn.classList.add('armed');clearBtn.textContent='Tap again to clear';clearTimer=setTimeout(disarm,4000);return;}
+  disarm();retake();clearBtn.textContent='Cleared';setTimeout(()=>{if(!clearBtn.classList.contains('armed'))clearBtn.textContent='Clear all answers';},1500);
+});
+document.getElementById('submitBtn').addEventListener('click',()=>{const left=Q.length-answered();
+  if(left>0){document.getElementById('confirmText').textContent=`You left ${left} question${left>1?'s':''} blank. Blank answers are marked wrong.`;document.getElementById('confirm').hidden=false;document.getElementById('submitAnyway').focus();return;}
+  submit();});
+document.getElementById('submitAnyway').addEventListener('click',()=>submit());
+document.getElementById('keepGoing').addEventListener('click',()=>{document.getElementById('confirm').hidden=true;const i=Q.findIndex((_,k)=>!getAns(k));if(i>=0)document.getElementById('card'+i).scrollIntoView({block:'center'});});
+
+load();updateCount();if(submitted)submit(true);
+</script>
+
+</body>
+</html>
