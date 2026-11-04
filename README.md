@@ -1,6 +1,6 @@
 # StudyGuides
 
-Self-grading practice quizzes, published with GitHub Pages at **https://cyberwookiee.github.io/StudyGuides/**.
+Self-grading practice quizzes, published with GitHub Pages at **https://cyberwookiee.github.io/StudyGuides/**. The home page there links to every quiz.
 
 Each quiz is a single web page that runs in any browser, including on a phone. It grades answers instantly and saves progress on the device. Nothing is sent anywhere, and no account is needed.
 
@@ -12,6 +12,7 @@ Each quiz is a single web page that runs in any browser, including on a phone. I
 | Algebra 2 | Unit 1 | [Quiz 1](https://cyberwookiee.github.io/StudyGuides/math/algebra-2/unit-1/quiz-1/) | Practice test |
 | Algebra 2 | Unit 1 | [Quiz 2](https://cyberwookiee.github.io/StudyGuides/math/algebra-2/unit-1/quiz-2/) | Practice test |
 | Algebra 2 | Unit 1 | [Quiz 3](https://cyberwookiee.github.io/StudyGuides/math/algebra-2/unit-1/quiz-3/) | Practice test |
+| Algebra 2 | Unit 2 | [Quiz 1](https://cyberwookiee.github.io/StudyGuides/math/algebra-2/unit-2/quiz-1/) | Practice test |
 
 There are two kinds of quiz:
 

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Study Guides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef2f6; --paper:#ffffff; --ink:#16202c; --muted:#596678; --line:#d5dde7;
+  --grid:rgba(31,95,191,.09); --accent:#1f5fbf; --accent-soft:#e2ebf9;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f141b; --paper:#161d27; --ink:#e5eaf1; --muted:#99a5b5; --line:#2a3443;
+  --grid:rgba(122,167,255,.07); --accent:#82abff; --accent-soft:#1b2944; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --paper:#161d27; --ink:#e5eaf1; --muted:#99a5b5; --line:#2a3443;
+  --grid:rgba(122,167,255,.07); --accent:#82abff; --accent-soft:#1b2944; color-scheme:dark }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.5;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{padding-block:calc(40px + env(safe-area-inset-top,0px)) 8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(32px,6vw,48px);line-height:1.05;margin:6px 0 12px;letter-spacing:-.01em}
+.intro{color:var(--muted);max-width:60ch;margin:0}
+main{padding-block:16px 48px}
+h2{font-family:var(--f-display);font-weight:800;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:28px 0 10px}
+.course{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:14px}
+.course h3{font-family:var(--f-display);font-weight:600;font-size:22px;margin:0 0 4px}
+.unit{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;padding-top:12px;border-top:1px solid var(--line);margin-top:12px}
+.unit:first-of-type{border-top:0;margin-top:4px;padding-top:4px}
+.unit-name{font-weight:700;font-size:15px;color:var(--muted)}
+.quizzes{display:flex;flex-wrap:wrap;gap:8px}
+.quiz{display:flex;flex-direction:column;gap:1px;text-decoration:none;color:var(--ink);border:1.5px solid var(--line);border-radius:9px;padding:9px 14px;min-width:150px;flex:1 1 180px}
+.quiz:hover,.quiz:focus-visible{border-color:var(--accent);background:var(--accent-soft);outline:none}
+.quiz b{color:var(--accent);font-family:var(--f-display);font-weight:800;font-size:15px}
+.quiz span{font-size:15px}
+footer{color:var(--muted);font-size:14px;padding-block:0 calc(40px + env(safe-area-inset-bottom,0px))}
+footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <div class="eyebrow">Practice quizzes</div>
+  <h1>Study Guides</h1>
+  <p class="intro">Self-grading practice quizzes. Each one runs in any browser, including on a phone, grades instantly and saves progress on your device.</p>
+</header>
+
+<main class="wrap">
+  <h2>Math</h2>
+
+  <section class="course">
+    <h3>Algebra 1</h3>
+    <div class="unit">
+      <div class="unit-name">Sequences and patterns</div>
+      <div class="quizzes">
+        <a class="quiz" href="math/algebra-1/sequences-and-patterns/quiz-1/"><b>Quiz 1</b><span>Pattern Quiz</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="course">
+    <h3>Algebra 2</h3>
+    <div class="unit">
+      <div class="unit-name">Unit 1</div>
+      <div class="quizzes">
+        <a class="quiz" href="math/algebra-2/unit-1/quiz-1/"><b>Quiz 1</b><span>Test Practice Quiz</span></a>
+        <a class="quiz" href="math/algebra-2/unit-1/quiz-2/"><b>Quiz 2</b><span>Test Practice Quiz 2</span></a>
+        <a class="quiz" href="math/algebra-2/unit-1/quiz-3/"><b>Quiz 3</b><span>Focus Quiz</span></a>
+      </div>
+    </div>
+    <div class="unit">
+      <div class="unit-name">Unit 2 · Systems</div>
+      <div class="quizzes">
+        <a class="quiz" href="math/algebra-2/unit-2/quiz-1/"><b>Quiz 1</b><span>Systems of Equations Practice</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">Made with the <a href="skills/study-quiz-builder/">Study Quiz Builder</a> skill.</footer>
+</body>
+</html>
